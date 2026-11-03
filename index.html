@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>স্কোর কনভার্টার</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f1fefb;--card:#fff;--ink:#022b24;--mute:#4a6b64;--line:#cdeee8;
+  --accent:#05705e;--accent-hover:#034439;--accent-ink:#fff;
+  --soft:#e7fefa;--soft2:#bbfcf1;--vivid:#0bf4cd;--warn:#b3261e;
+  --shadow:0 1px 2px rgba(3,68,57,.06),0 8px 24px rgba(3,68,57,.07);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#011814;--card:#03271f;--ink:#e7fefa;--mute:#8fbfb5;--line:#0b4b3f;
+  --accent:#27f5d3;--accent-hover:#63f8df;--accent-ink:#011814;
+  --soft:#053a30;--soft2:#07564a;--vivid:#0bf4cd;--warn:#ff8a80;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Hind Siliguri","Noto Sans Bengali","Kalpurush",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.ic{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+
+[hidden]{display:none!important}
+.nav{position:sticky;top:0;z-index:30;background:#011814;border-bottom:1px solid #0b4b3f}
+.nav-in{max-width:1340px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;text-decoration:none}
+.brand .lg{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#0bf4cd;color:#011814}
+.tabs{display:flex;gap:6px}
+.tab{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:99px;color:#bbfcf1;text-decoration:none;font-weight:600;transition:background .15s}
+.tab:hover{background:#034439}
+.tab.on{background:#0bf4cd;color:#011814}
+@media (max-width:520px){.brand span{display:none}.tab{padding:7px 12px}}
+/* hero */
+.hero{position:relative;background:linear-gradient(135deg,#011814 0%,#034439 62%,#05705e 100%);color:#e7fefa;padding:38px 16px 52px;overflow:hidden}
+.hero-in{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.hero h1{font-size:2.1rem;margin:0 0 6px;font-weight:700;color:#fff;display:flex;align-items:center;gap:12px;line-height:1.25}
+.logo{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--vivid);color:#011814;flex:none}
+.logo .ic{width:26px;height:26px}
+.sub{margin:0 0 20px;color:#bbfcf1;max-width:56ch}
+.strip{display:flex;height:10px;border-radius:99px;overflow:hidden;max-width:360px}
+.strip i{flex:1}
+.art{width:170px;height:auto;flex:none}
+.hero-link{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 16px;border-radius:99px;background:#0bf4cd;color:#011814;font-weight:700;text-decoration:none;transition:transform .15s,background .15s}
+.hero-link:hover{background:#63f8df;transform:translateY(-1px)}
+.ruler{position:absolute;left:0;right:0;bottom:0;height:16px;opacity:.5;
+  background:
+   linear-gradient(90deg,#8ffae8 1px,transparent 1px) 0 100%/50px 16px repeat-x,
+   linear-gradient(90deg,#8ffae8 1px,transparent 1px) 0 100%/10px 8px repeat-x}
+
+/* steps */
+.wrap{max-width:980px;margin:26px auto 0;padding:0 16px}
+.step{display:grid;grid-template-columns:48px 1fr;gap:0 16px;padding-bottom:18px}
+.rail{display:flex;flex-direction:column;align-items:center}
+.rail::after{content:"";flex:1;width:2px;margin-top:8px;background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 11px)}
+.step:last-child .rail::after{display:none}
+.badge{position:relative;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#034439,#05705e);color:var(--vivid);box-shadow:var(--shadow)}
+.badge .ic{width:22px;height:22px}
+.badge em{position:absolute;right:-6px;top:-6px;min-width:20px;height:20px;padding:0 4px;border-radius:99px;background:var(--vivid);color:#011814;font:700 .75rem/20px inherit;text-align:center;font-style:normal;border:2px solid var(--bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);min-width:0}
+h2{font-size:1.15rem;margin:0 0 16px;line-height:1.3}
+h2 small{display:block;margin-top:2px;font-weight:400;font-size:.85rem;color:var(--mute)}
+
+/* forms */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.wide{grid-column:1/-1}
+label{display:block;font-size:.88rem;color:var(--mute);margin-bottom:5px}
+.inp{position:relative}
+.inp .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--accent);pointer-events:none}
+.inp input{padding-left:38px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;transition:border-color .15s,box-shadow .15s}
+input:hover,select:hover,textarea:hover{border-color:var(--accent)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--vivid) 45%,transparent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+textarea{min-height:100px;resize:vertical}
+button{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:9px 15px;border:1px solid var(--line);background:var(--card);color:var(--ink);transition:background .15s,border-color .15s}
+button:hover{background:var(--soft);border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+button.x{padding:6px 8px;color:var(--warn)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.hint{font-size:.86rem;color:var(--mute);margin-top:8px}
+.formula{display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:8px;padding:10px 14px;font-size:.95rem;margin-top:16px;border-left:4px solid var(--vivid)}
+.formula .ic{color:var(--accent)}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:16px;background:var(--soft);margin-bottom:16px;transition:border-color .15s}
+.drop.over{border-color:var(--vivid);background:var(--soft2)}
+.drop label{display:flex;gap:8px;align-items:center;color:var(--ink)}
+.drop input[type=file]{padding:7px;background:var(--card)}
+.msg{font-size:.9rem;margin-top:8px}.msg.err{color:var(--warn)}
+
+/* tables */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+thead th{font-size:.84rem;color:var(--mute);font-weight:600;background:var(--soft)}
+tbody tr:hover{background:color-mix(in srgb,var(--soft) 60%,transparent)}
+td input{padding:6px 9px;background:var(--card)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.g{display:inline-block;min-width:2.6em;text-align:center;padding:1px 9px;border-radius:6px;background:var(--soft2);color:var(--ink);font-weight:600}
+.g.f{background:transparent;color:var(--warn);border:1px solid var(--warn)}
+.empty{color:var(--mute);padding:18px 0;text-align:center}
+
+/* result sheet */
+.sheet-head{text-align:center;border:1px solid var(--line);border-radius:12px;background:var(--soft);padding:18px 16px 14px;margin-bottom:16px;position:relative}
+.sheet-head::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:12px 12px 0 0;background:linear-gradient(90deg,#e7fefa,#8ffae8,#0bf4cd,#079c83,#034439)}
+.sheet-head h3{margin:6px 0 2px;font-size:1.45rem;line-height:1.3}
+.sheet-head h3.ph{color:var(--mute);font-weight:400;font-size:1.05rem}
+.sheet-head .t{font-weight:600;color:var(--accent);margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;font-size:.95rem}
+.meta span{display:inline-flex;align-items:center;gap:7px}
+.meta .ic{color:var(--accent)}
+.conv{margin-top:10px;font-size:.88rem;color:var(--mute)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat{display:flex;gap:12px;align-items:center;background:var(--soft);border-radius:10px;padding:12px 14px}
+.stat .ic{width:22px;height:22px;color:var(--accent)}
+.stat b{display:block;font-size:1.25rem;line-height:1.3}
+.stat span{font-size:.82rem;color:var(--mute)}
+
+footer{margin-top:28px;padding:22px 16px;text-align:center;background:#011814;color:#8fbfb5;font-size:.93rem}
+footer a{color:#27f5d3;font-weight:600;text-decoration:none}
+footer a:hover{color:#63f8df;text-decoration:underline}
+
+/* ads */
+.ad{display:none}
+.ad-label{font-size:.7rem;color:var(--mute);text-align:center;margin-bottom:4px;letter-spacing:.3px}
+.ad iframe{display:block;border:0;margin:0 auto;max-width:100%}
+.ad-ph{display:grid;place-items:center;text-align:center;border:2px dashed var(--line);border-radius:10px;background:var(--soft);color:var(--mute);font-size:.82rem;padding:8px;margin:0 auto;max-width:100%}
+@media (min-width:1380px){
+  .page{display:grid;grid-template-columns:160px minmax(0,980px) 160px;gap:20px;justify-content:center;align-items:start}
+  .page .wrap{max-width:none;margin:26px 0 0;padding:0}
+  .ad-l,.ad-r{display:block;position:sticky;top:76px;margin-top:26px}
+}
+@media (max-width:1379.98px){.ad-m{display:block;margin:6px auto 0;padding:0 16px}}
+
+@media (max-width:640px){
+  .hero h1{font-size:1.5rem}.logo{width:38px;height:38px}.art{display:none}
+  .step{grid-template-columns:36px 1fr;gap:0 10px}
+  .badge{width:36px;height:36px;border-radius:10px}.badge .ic{width:18px;height:18px}
+  .card{padding:16px}
+}
+@media print{
+  :root{--bg:#fff;--card:#fff;--ink:#000;--mute:#333;--line:#999;--soft:#fff;--soft2:#ddd;--accent:#000;--warn:#000;--shadow:none}
+  body{background:#fff}
+  .nav,.hero-link,.ad,.hero,.step:not(#sResult),#actions,footer,#sResult .rail,#sResult h2{display:none!important}
+  .wrap{margin:0;padding:0;max-width:none}
+  #sResult{display:block;padding:0}
+  #sResult .card{border:0;padding:0;box-shadow:none}
+  .sheet-head{border:0;border-bottom:2px solid #000;border-radius:0;background:#fff;padding:0 0 10px}
+  .sheet-head::before,.ph{display:none!important}
+  .stat{border:1px solid #999}
+  .scroll{overflow:visible}
+  table{min-width:0}
+  th,td{padding:6px 8px}
+}
+
+/* ===== tutorial (scoped) ===== */
+#tut .top{background:linear-gradient(135deg,#011814,#034439 65%,#05705e);color:#fff;padding:22px 16px}
+#tut .top-in,#tut .main{max-width:980px;margin:0 auto}
+#tut .top-in{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#tut .tt{margin:0;font-weight:700;font-size:1.5rem;display:flex;align-items:center;gap:12px;line-height:1.3}
+#tut .logo{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:#0bf4cd;color:#011814}
+#tut .logo .ic{width:24px;height:24px}
+#tut .main{padding:18px 16px 40px}
+#tut .tbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+#tut .tbar p{margin:0;color:var(--mute)}
+#tut button,#tut .lnk{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;border-radius:9px;padding:8px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;transition:background .15s,border-color .15s}
+#tut button:hover,#tut .lnk:hover{background:var(--soft);border-color:var(--accent)}
+#tut button:focus-visible,#tut .lnk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#tut .lnk.p,#tut button.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+@media (prefers-color-scheme:dark){#tut .lnk.p,#tut button.on{color:#011814}}
+#tut .seg2{display:inline-flex;gap:6px}
+#tut .stage{position:relative;display:flex;justify-content:center;align-items:flex-start;padding:62px 12px 126px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(135deg,#011814,#034439 70%,#05705e);box-shadow:0 10px 30px rgba(3,68,57,.25)}
+#tut .stage::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;opacity:.4;
+  background:linear-gradient(90deg,#8ffae8 1px,transparent 1px) 0 0/50px 14px repeat-x,linear-gradient(90deg,#8ffae8 1px,transparent 1px) 0 0/10px 7px repeat-x}
+#tut .lab{position:absolute;left:14px;top:26px;display:flex;align-items:center;gap:10px;color:#e7fefa;font-weight:600}
+#tut .lab .bd{position:relative;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#0bf4cd;color:#011814}
+#tut .lab small{display:block;font-weight:400;color:#8ffae8;font-size:.78rem;line-height:1.1}
+#tut .dev{width:100%;display:flex;flex-direction:column;align-items:center}
+#tut .bezel{position:relative;background:#0b1f1b;border:8px solid #0b1f1b;box-shadow:0 0 0 2px #1d4d43;overflow:hidden}
+#tut .pc .bezel{width:min(720px,100%);aspect-ratio:16/10;border-radius:14px 14px 4px 4px}
+#tut .mob .bezel{width:250px;aspect-ratio:9/17;border-radius:30px;border-width:9px}
+#tut .mob .bezel::before{content:"";position:absolute;z-index:3;top:5px;left:50%;width:56px;height:6px;margin-left:-28px;border-radius:9px;background:#0b1f1b}
+#tut .base{display:none;width:min(790px,108%);height:12px;border-radius:0 0 14px 14px;background:linear-gradient(#8ffae8,#2c6b5f)}
+#tut .pc .base{display:block}
+#tut .scr{position:absolute;inset:0;background:#f1fefb;container:scr/inline-size;overflow:hidden}
+#tut .cap{position:absolute;left:12px;right:12px;bottom:12px;min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 18px;border-radius:14px;
+  background:rgba(1,24,20,.9);border:1px solid rgba(11,244,205,.4);box-shadow:0 6px 20px rgba(0,0,0,.35);
+  font-weight:700;font-size:clamp(1.05rem,2.5vw,1.6rem);line-height:1.5;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+#tut .cap mark{background:none;color:#0bf4cd}
+#tut .cap.in span{animation:cap .45s both}
+#tut .ctl{display:flex;align-items:center;gap:10px;margin-top:12px}
+#tut .segs{flex:1;display:flex;gap:6px}
+#tut .sg{flex:1;position:relative;padding:6px 4px;font-size:.78rem;justify-content:center;overflow:hidden;min-width:0}
+#tut .sg span{position:relative;z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tut .sg i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--soft);border-right:2px solid var(--vivid)}
+#tut .sg.d i{width:100%;border:0}
+#tut .sg.c{border-color:var(--accent)}
+@media (max-width:720px){#tut .sg span{display:none}
+#tut .sg{padding:9px 4px}}
+#tut .hint{margin-top:14px;color:var(--mute);font-size:.9rem;text-align:center}
+#tut .m{height:100%;padding:1em;display:flex;flex-direction:column;gap:.7em;font-size:clamp(10px,1.8cqw,13px);color:#022b24;position:relative}
+#tut .m-t{display:flex;align-items:center;gap:.6em;font-weight:700;font-size:1.15em;animation:up .5s both}
+#tut .m-b{width:2.2em;height:2.2em;border-radius:.6em;background:linear-gradient(135deg,#034439,#05705e);color:#0bf4cd;display:grid;place-items:center}
+#tut .m-card{position:relative;background:#fff;border:1px solid #cdeee8;border-radius:.8em;padding:.8em;box-shadow:0 .2em .8em rgba(3,68,57,.08)}
+#tut .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+@container scr (max-width:430px){#tut .m-grid{grid-template-columns:1fr}
+#tut .m-grid .wide{grid-column:auto}}
+#tut .wide{grid-column:1/-1}
+#tut .m-l{font-size:.8em;color:#4a6b64;margin-bottom:.2em}
+#tut .m-in{display:flex;align-items:center;gap:.5em;border:1px solid #cdeee8;border-radius:.5em;padding:.45em .6em;background:#f1fefb;min-height:2.2em}
+#tut .m-in .ic{color:#05705e}
+#tut .m-in.hl{border-color:#05705e;box-shadow:0 0 0 .25em rgba(11,244,205,.4)}
+#tut .typed{display:inline-block;animation:reveal 1.1s steps(var(--n,10)) var(--d,0s) both}
+#tut .cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:.6em;align-items:center}
+#tut .mid{width:2.4em;height:2.4em;border-radius:50%;background:#0bf4cd;color:#011814;display:grid;place-items:center}
+#tut .bars{display:flex;align-items:flex-end;gap:.45em;height:8.5em}
+#tut .bc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:.15em}
+#tut .bc b{font-size:.75em}
+#tut .bar{width:100%;height:calc(var(--h)*7em);border-radius:.3em .3em 0 0;transform-origin:bottom;animation:grow .7s var(--d) both}
+#tut .bar.o{background:#8ffae8}
+#tut .bar.n{background:#05705e}
+#tut .chips{display:flex;gap:.5em;flex-wrap:wrap;justify-content:center}
+#tut .chip{padding:.2em .8em;border-radius:99px;background:#e7fefa;border:1px solid #cdeee8;font-weight:600}
+#tut .chip.n{background:#05705e;color:#fff;border-color:#05705e}
+#tut .opts{display:flex;gap:.5em;flex-wrap:wrap}
+#tut .opt{padding:.35em .8em;border-radius:.5em;border:1px solid #cdeee8;background:#f1fefb}
+#tut .opt.on{background:#bbfcf1;border-color:#05705e;font-weight:700;animation:pulse 1.4s 3s 2}
+#tut .tformula{display:flex;align-items:center;gap:.6em;background:#e7fefa;border-left:.3em solid #0bf4cd;border-radius:.5em;padding:.6em .8em}
+#tut .tdrop{position:relative}
+#tut .dz{display:flex;flex-direction:column;align-items:center;gap:.3em;border:2px dashed #8ffae8;border-radius:.7em;background:#e7fefa;padding:1em .5em;text-align:center;color:#05705e;font-weight:600}
+#tut .dz .ic{width:2em;height:2em}
+#tut .btns{display:flex;gap:.5em;flex-wrap:wrap;margin-top:.6em}
+#tut .btn{position:relative;display:inline-flex;align-items:center;gap:.4em;padding:.4em .8em;border-radius:.5em;border:1px solid #cdeee8;background:#fff;font-weight:600}
+#tut .btn.pr{background:#05705e;color:#fff;border-color:#05705e}
+#tut .btn.pulse{animation:pulse 1.2s infinite}
+#tut .fchip{position:absolute;left:50%;top:.8em;margin-left:-4.2em;padding:.4em .8em;border-radius:.5em;background:#05705e;color:#fff;font-weight:600;display:flex;gap:.4em;align-items:center;animation:fly 1.2s var(--d) both}
+#tut .ok{display:flex;align-items:center;gap:.5em;color:#05705e;font-weight:700}
+#tut .rw{display:flex;justify-content:space-between;padding:.3em .2em;border-bottom:1px solid #e0f3ef}
+#tut .tb{width:100%;border-collapse:collapse}
+#tut .tb th{font-size:.8em;color:#4a6b64;background:#e7fefa;text-align:left;padding:.4em .6em}
+#tut .tb td{padding:.38em .6em;border-bottom:1px solid #e0f3ef}
+#tut .tb td:nth-child(n+2),#tut .tb th:nth-child(n+2){text-align:right}
+#tut .tb tr.a-up{animation-fill-mode:both}
+#tut .tb tr.hl td{background:#bbfcf1;animation:pulse 1.2s 3s 2}
+#tut .g{display:inline-block;min-width:2.4em;text-align:center;padding:0 .5em;border-radius:.4em;background:#bbfcf1;font-weight:700}
+#tut .head{text-align:center;border:1px solid #cdeee8;border-top:.35em solid #0bf4cd;border-radius:.6em;background:#e7fefa;padding:.5em}
+#tut .head b{display:block;font-size:1.2em}
+#tut .head small{color:#05705e;font-weight:600}
+#tut .stt{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em}
+#tut .stt div{background:#e7fefa;border-radius:.5em;padding:.35em .6em;border-left:.25em solid #0bf4cd;font-size:.85em}
+#tut .stt b{display:block;font-size:1.2em}
+#tut .paper{background:#fff;border:1px solid #cdeee8;border-radius:.4em;padding:.7em;box-shadow:0 .5em 1.4em rgba(3,68,57,.25);text-align:center}
+#tut .paper .ln{height:.55em;border-radius:99px;background:#d9efea;margin:.45em 0}
+#tut .tip{display:flex;align-items:center;gap:.8em;background:#fff;border:1px solid #cdeee8;border-radius:.8em;padding:.7em .9em;font-weight:600}
+#tut .tip .m-b{width:2.6em;height:2.6em;animation:float 2.4s infinite}
+#tut .ptr{position:absolute;right:-.3em;bottom:-1.6em;width:1.8em;height:1.8em;z-index:4;pointer-events:none;animation:ptr 1.2s var(--d,0s) both}
+#tut .ptr svg{width:100%;height:100%;fill:#022b24;stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 .1em .2em rgba(0,0,0,.4))}
+#tut .ptr i{position:absolute;left:-.4em;top:-.4em;width:1.4em;height:1.4em;border-radius:50%;border:.2em solid #0bf4cd;animation:ripple .8s calc(var(--d,0s) + 1.2s) 2 both}
+#tut .a-pop{animation:pop .5s var(--d,0s) both cubic-bezier(.2,.8,.2,1)}
+#tut .a-up{animation:up .5s var(--d,0s) both cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes fly{0%{opacity:0;transform:translate(70%,-160%) rotate(10deg)}50%{opacity:1}100%{opacity:1;transform:translate(0,3.2em)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(11,244,205,.8)}50%{box-shadow:0 0 0 .5em rgba(11,244,205,0)}}
+@keyframes ptr{0%{opacity:0;transform:translate(4em,3em)}30%{opacity:1}100%{opacity:1;transform:translate(0,0)}}
+@keyframes ripple{0%{transform:scale(.3);opacity:1}100%{transform:scale(2.2);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-.35em)}}
+@keyframes cap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#tut .paused *,#tut .paused *::before,#tut .paused *::after{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){#tut .m *{animation-duration:.01s!important;animation-delay:0s!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h.01M12 10h.01M15 10h.01M9 13h.01M12 13h.01M15 13h.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5V4.5A2.5 2.5 0 0 1 6.5 2H20v15H6.5A2.5 2.5 0 0 0 4 19.5zm0 0A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15v3M12 9v9M17 5v13"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M17 3l4 4-4 4M21 7H7M7 21l-4-4 4-4M3 17h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-avg" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+  <symbol id="i-top" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8zM5 4v16"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8zM19 4v16"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+</svg>
+
+<nav class="nav"><div class="nav-in">
+  <a class="brand" href="#tool"><span class="lg"><svg class="ic"><use href="#i-logo"/></svg></span><span>স্কোর কনভার্টার</span></a>
+  <div class="tabs">
+    <a class="tab on" data-v="tool" href="#tool"><svg class="ic"><use href="#i-chart"/></svg>কনভার্টার</a>
+    <a class="tab" data-v="tut" href="#tutorial"><svg class="ic"><use href="#i-play"/></svg>টিউটোরিয়াল</a>
+  </div>
+</div></nav>
+
+<div id="viewTool">
+<header class="hero">
+  <div class="hero-in">
+    <div>
+      <h1><span class="logo"><svg class="ic"><use href="#i-logo"/></svg></span>স্কোর কনভার্টার</h1>
+      <p class="sub">পরীক্ষার নম্বর নতুন পূর্ণমানে রূপান্তর করুন এবং প্রতিটি শিক্ষার্থীর নতুন স্কোর ও গ্রেড দেখুন।</p>
+      <div class="strip" aria-hidden="true"><i style="background:#e7fefa"></i><i style="background:#bbfcf1"></i><i style="background:#8ffae8"></i><i style="background:#63f8df"></i><i style="background:#27f5d3"></i><i style="background:#0bf4cd"></i><i style="background:#079c83"></i><i style="background:#05705e"></i><i style="background:#034439"></i><i style="background:#011814"></i></div>
+      <a class="hero-link" href="#tutorial"><svg class="ic"><use href="#i-play"/></svg>কীভাবে কাজ করে? টিউটোরিয়াল দেখুন</a>
+    </div>
+    <svg class="art" viewBox="0 0 170 120" aria-hidden="true">
+      <line x1="8" y1="106" x2="162" y2="106" stroke="#8ffae8" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+      <rect x="18" y="62" width="30" height="44" rx="5" fill="#63f8df" opacity=".35"/>
+      <rect x="70" y="40" width="30" height="66" rx="5" fill="#27f5d3" opacity=".6"/>
+      <rect x="122" y="14" width="30" height="92" rx="5" fill="#0bf4cd"/>
+      <path d="M33 52 Q77 8 122 8" fill="none" stroke="#e7fefa" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"/>
+      <path d="M116 3l7 5-7 5" fill="none" stroke="#e7fefa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="ruler" aria-hidden="true"></div>
+</header>
+
+<div class="page">
+<aside class="ad ad-l" id="slotL" data-w="160" data-h="600" aria-label="বিজ্ঞাপন"></aside>
+<main class="wrap">
+
+  <section class="step" id="sInfo">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-building"/></svg><em>১</em></div></div>
+    <div class="card">
+      <h2>পরীক্ষার তথ্য<small>এই তথ্য ফলাফল প্রিন্টের উপরে বসবে</small></h2>
+      <div class="grid">
+        <div class="wide"><label for="inst">প্রতিষ্ঠানের নাম</label><div class="inp"><svg class="ic"><use href="#i-building"/></svg><input id="inst" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়"></div></div>
+        <div><label for="batch">ব্যাচ / শ্রেণি</label><div class="inp"><svg class="ic"><use href="#i-users"/></svg><input id="batch" placeholder="যেমন: নবম শ্রেণি, ব্যাচ ২০২৬"></div></div>
+        <div><label for="subj">বিষয়</label><div class="inp"><svg class="ic"><use href="#i-book"/></svg><input id="subj" placeholder="যেমন: গণিত"></div></div>
+        <div><label for="edate">পরীক্ষার তারিখ</label><div class="inp"><svg class="ic"><use href="#i-cal"/></svg><input id="edate" type="date"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="sSet">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-sliders"/></svg><em>২</em></div></div>
+    <div class="card">
+      <h2>কনভার্সনের সেটিং</h2>
+      <div class="grid">
+        <div><label for="orig">মূল পূর্ণমান</label><input id="orig" type="number" min="1" value="100"></div>
+        <div><label for="target">নতুন পূর্ণমান</label><input id="target" type="number" min="1" value="80"></div>
+        <div><label for="method">কনভার্সন পদ্ধতি</label>
+          <select id="method">
+            <option value="top">সর্বোচ্চ নম্বর ভিত্তিক</option>
+            <option value="ratio">সমানুপাতিক (নতুন ÷ মূল)</option>
+          </select>
+        </div>
+        <div id="baseBox"><label for="base">ভিত্তি নম্বর (খালি রাখলে সর্বোচ্চ নম্বর)</label><input id="base" type="number" min="1" placeholder="স্বয়ংক্রিয়"></div>
+        <div><label for="dec">দশমিক ঘর</label>
+          <select id="dec"><option value="0">০ (পূর্ণসংখ্যা)</option><option value="1">১ ঘর</option><option value="2" selected>২ ঘর</option></select>
+        </div>
+      </div>
+      <div class="formula"><svg class="ic"><use href="#i-swap"/></svg><span id="formula"></span></div>
+      <div class="hint">সর্বোচ্চ নম্বর ভিত্তিক: যিনি সবচেয়ে বেশি পেয়েছেন (যেমন ৭০) তিনি নতুন পূর্ণমান (যেমন ৮০) পাবেন, বাকিরা সেই অনুপাতে।</div>
+    </div>
+  </section>
+
+  <section class="step" id="sData">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-upload"/></svg><em>৩</em></div></div>
+    <div class="card">
+      <h2>শিক্ষার্থীর নম্বর দিন</h2>
+      <div class="drop" id="drop">
+        <label for="file"><svg class="ic"><use href="#i-file"/></svg><b>Excel (.xlsx) বা CSV ফাইল আপলোড করুন</b></label>
+        <div class="hint" style="margin:2px 0 8px">ফাইলে ‘নাম’ ও ‘নম্বর’ নামে দুটি কলাম থাকতে হবে। ফাইল এখানে ড্র্যাগও করা যায়।</div>
+        <input type="file" id="file" accept=".xlsx,.xls,.csv">
+        <div class="row" style="margin-top:10px">
+          <button id="demoXlsx"><svg class="ic"><use href="#i-down"/></svg>ডেমো Excel</button>
+          <button id="demoCsv"><svg class="ic"><use href="#i-down"/></svg>ডেমো CSV</button>
+        </div>
+        <div class="msg" id="fileMsg"></div>
+      </div>
+      <label for="bulk">অথবা একসাথে পেস্ট করুন (প্রতি লাইনে: নাম, নম্বর)</label>
+      <textarea id="bulk" placeholder="রহিম, 68&#10;করিম, 55&#10;সুমি, 70"></textarea>
+      <div class="row">
+        <button class="primary" id="loadBulk"><svg class="ic"><use href="#i-plus"/></svg>তালিকায় যোগ করুন</button>
+        <button id="addRow"><svg class="ic"><use href="#i-plus"/></svg>একটি সারি</button>
+        <button id="sample">উদাহরণ দেখুন</button>
+        <button id="clear"><svg class="ic"><use href="#i-trash"/></svg>সব মুছুন</button>
+      </div>
+      <div class="scroll" style="margin-top:16px">
+        <table>
+          <thead><tr><th style="width:56px">ক্রম</th><th>নাম</th><th style="width:150px">মূল নম্বর</th><th style="width:56px"></th></tr></thead>
+          <tbody id="inputBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="sGrade">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-award"/></svg><em>৪</em></div></div>
+    <div class="card">
+      <h2>গ্রেডিং স্কেল<small>নতুন স্কোরের শতকরা হারে; পরিবর্তন করা যায়</small></h2>
+      <div class="scroll">
+        <table style="min-width:420px">
+          <thead><tr><th>ন্যূনতম %</th><th>গ্রেড</th><th>জিপিএ</th></tr></thead>
+          <tbody id="gradeBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="sResult">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-chart"/></svg><em>৫</em></div></div>
+    <div class="card">
+      <h2>ফলাফল</h2>
+      <div class="sheet-head" id="sheetHead"></div>
+      <div id="results"></div>
+      <div class="row" id="actions" style="display:none">
+        <button class="primary" id="print"><svg class="ic"><use href="#i-print"/></svg>প্রিন্ট</button>
+        <button id="xlsx"><svg class="ic"><use href="#i-down"/></svg>Excel</button>
+        <button id="csv"><svg class="ic"><use href="#i-down"/></svg>CSV</button>
+        <button id="copy"><svg class="ic"><use href="#i-copy"/></svg><span>কপি</span></button>
+      </div>
+    </div>
+  </section>
+
+</main>
+<aside class="ad ad-r" id="slotR" data-w="160" data-h="600" aria-label="বিজ্ঞাপন"></aside>
+</div>
+<div class="ad ad-m" id="slotM" data-w="300" data-h="250" aria-label="বিজ্ঞাপন"></div>
+
+</div>
+
+<section id="tut" hidden>
+<div class="top"><div class="top-in">
+  <div class="tt"><span class="logo"><svg class="ic"><use href="#i-logo"/></svg></span>স্কোর কনভার্টার — টিউটোরিয়াল</div>
+  <a class="lnk p" href="#tool"><svg class="ic"><use href="#i-chart"/></svg>টুলটি ব্যবহার করুন</a>
+</div></div>
+<div class="main">
+  <div class="tbar">
+    <p>মোবাইল ও কম্পিউটারে কীভাবে ব্যবহার করবেন, ধাপে ধাপে দেখুন।</p>
+    <div class="seg2">
+      <button id="bPc"><svg class="ic"><use href="#i-laptop"/></svg>কম্পিউটার</button>
+      <button id="bMob"><svg class="ic"><use href="#i-phone"/></svg>মোবাইল</button>
+    </div>
+  </div>
+
+  <div class="stage pc" id="stage">
+    <div class="lab"><span class="bd" id="lIc"></span><div><small id="lNo"></small><span id="lT"></span></div></div>
+    <div class="dev"><div class="bezel"><div class="scr" id="scr"></div></div><div class="base"></div></div>
+    <div class="cap" id="cap" aria-live="polite"></div>
+  </div>
+
+  <div class="ctl">
+    <button id="bPlay" class="on" aria-label="চালান/থামান"></button>
+    <button id="bPrev" aria-label="আগের ধাপ"><svg class="ic"><use href="#i-prev"/></svg></button>
+    <button id="bNext" aria-label="পরের ধাপ"><svg class="ic"><use href="#i-next"/></svg></button>
+    <div class="segs" id="segs"></div>
+  </div>
+  <div class="hint">কীবোর্ডে স্পেস = চালান/থামান, ← → = ধাপ বদল</div>
+</div>
+</section>
+
+<footer>তৈরি করেছেন <a href="https://www.facebook.com/mdsahjalal.net" target="_blank" rel="noopener noreferrer">Md Shahjalal</a></footer>
+
+<!-- ===== Adsterra বিজ্ঞাপনের কোড ===== -->
+<!-- নিচের তিনটি template এর ভেতরে Adsterra থেকে পাওয়া কোড হুবহু পেস্ট করুন। ফাঁকা থাকলে ডটেড বক্স দেখাবে। -->
+
+<!-- বাম পাশ: 160x600 ব্যানার -->
+<template id="ad-left">
+  <!-- এখানে পেস্ট করুন -->
+</template>
+
+<!-- ডান পাশ: 160x600 ব্যানার -->
+<template id="ad-right">
+  <!-- এখানে পেস্ট করুন -->
+</template>
+
+<!-- মোবাইল/ছোট স্ক্রিন (নিচে দেখাবে): 300x250 ব্যানার -->
+<template id="ad-mobile">
+  <!-- এখানে পেস্ট করুন -->
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+  var $ = function(id){return document.getElementById(id)};
+  var grades = [
+    {min:80,g:"A+",gp:5},{min:70,g:"A",gp:4},{min:60,g:"A-",gp:3.5},
+    {min:50,g:"B",gp:3},{min:40,g:"C",gp:2},{min:33,g:"D",gp:1},{min:0,g:"F",gp:0}
+  ];
+  var students = [];
+  var bn = "০১২৩৪৫৬৭৮৯";
+  var months = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+  function ic(n){return '<svg class="ic"><use href="#i-'+n+'"/></svg>'}
+  function toBn(s){return String(s).replace(/[0-9]/g,function(d){return bn[d]})}
+  function fromBn(s){return String(s).replace(/[০-৯]/g,function(d){return bn.indexOf(d)})}
+  function num(v){var n=parseFloat(fromBn(v).replace(/,/g,"."));return isNaN(n)?null:n}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function fmt(n,d){return toBn(Number(n.toFixed(d)).toString())}
+  function fmtDate(v){
+    var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||""); if(!m) return "";
+    return toBn(parseInt(m[3],10))+" "+months[parseInt(m[2],10)-1]+", "+toBn(m[1]);
+  }
+
+  /* ---- exam info ---- */
+  var infoIds=["inst","batch","subj","edate"];
+  function getInfo(){return {inst:$("inst").value.trim(),batch:$("batch").value.trim(),subj:$("subj").value.trim(),date:fmtDate($("edate").value)}}
+  try{var saved=JSON.parse(localStorage.getItem("scInfo")||"{}");infoIds.forEach(function(k){if(saved[k])$(k).value=saved[k]})}catch(e){}
+  infoIds.forEach(function(k){$(k).addEventListener("input",function(){
+    try{var o={};infoIds.forEach(function(i){o[i]=$(i).value});localStorage.setItem("scInfo",JSON.stringify(o))}catch(e){}
+    renderHead();
+  })});
+  function renderHead(){
+    var i=getInfo(), c=compute();
+    var h = i.inst ? '<h3>'+esc(i.inst)+'</h3>' : '<h3 class="ph">প্রতিষ্ঠানের নাম</h3>';
+    h+='<div class="t">পরীক্ষার ফলাফল</div><div class="meta">';
+    if(i.batch) h+='<span>'+ic("users")+esc(i.batch)+'</span>';
+    if(i.subj)  h+='<span>'+ic("book")+'বিষয়: '+esc(i.subj)+'</span>';
+    if(i.date)  h+='<span>'+ic("cal")+esc(i.date)+'</span>';
+    h+='</div><div class="conv">মূল পূর্ণমান '+fmt(c.orig,2)+' → নতুন পূর্ণমান '+fmt(c.target,2)+'</div>';
+    $("sheetHead").innerHTML=h;
+  }
+
+  /* ---- grades ---- */
+  function renderGrades(){
+    $("gradeBody").innerHTML = grades.map(function(r,i){
+      return '<tr><td><input type="number" min="0" max="100" value="'+r.min+'" data-i="'+i+'" data-k="min"></td>'+
+             '<td><input value="'+esc(r.g)+'" data-i="'+i+'" data-k="g"></td>'+
+             '<td><input type="number" step="0.01" value="'+r.gp+'" data-i="'+i+'" data-k="gp"></td></tr>';
+    }).join("");
+  }
+  $("gradeBody").addEventListener("input",function(e){
+    var t=e.target,i=t.dataset.i,k=t.dataset.k; if(i==null)return;
+    grades[i][k] = k==="g" ? t.value : (parseFloat(t.value)||0);
+    renderResults();
+  });
+  function gradeOf(pct){
+    var sorted = grades.slice().sort(function(a,b){return b.min-a.min});
+    for(var i=0;i<sorted.length;i++) if(pct>=sorted[i].min) return sorted[i];
+    return sorted[sorted.length-1] || {g:"-",gp:0};
+  }
+
+  /* ---- student inputs ---- */
+  function renderInputs(){
+    $("inputBody").innerHTML = students.map(function(s,i){
+      return '<tr><td>'+toBn(i+1)+'</td>'+
+        '<td><input value="'+esc(s.name)+'" data-i="'+i+'" data-k="name" placeholder="শিক্ষার্থীর নাম"></td>'+
+        '<td><input type="number" min="0" step="any" value="'+(s.score===null?"":s.score)+'" data-i="'+i+'" data-k="score"></td>'+
+        '<td><button class="x" data-del="'+i+'" aria-label="মুছুন">'+ic("x")+'</button></td></tr>';
+    }).join("");
+  }
+  $("inputBody").addEventListener("input",function(e){
+    var t=e.target,i=t.dataset.i,k=t.dataset.k; if(i==null)return;
+    students[i][k] = k==="score" ? num(t.value) : t.value;
+    renderResults();
+  });
+  $("inputBody").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-del]"); if(!b)return;
+    students.splice(+b.dataset.del,1); renderInputs(); renderResults();
+  });
+
+  /* ---- compute & render ---- */
+  function compute(){
+    var orig=num($("orig").value)||100, target=num($("target").value)||80;
+    var dec=+$("dec").value, method=$("method").value;
+    var valid=students.filter(function(s){return s.score!==null&&s.score!==undefined});
+    var max=valid.reduce(function(m,s){return Math.max(m,s.score)},0);
+    var baseIn=num($("base").value);
+    var base = method==="top" ? (baseIn||max||orig) : orig;
+    return {orig:orig,target:target,dec:dec,method:method,max:max,base:base,factor:target/base};
+  }
+  function renderResults(){
+    var c=compute();
+    $("baseBox").style.display = c.method==="top" ? "" : "none";
+    $("formula").innerHTML = c.method==="top"
+      ? 'নতুন স্কোর = (মূল নম্বর ÷ <b>'+fmt(c.base,2)+'</b>) × <b>'+fmt(c.target,2)+'</b>'
+      : 'নতুন স্কোর = মূল নম্বর × (<b>'+fmt(c.target,2)+'</b> ÷ <b>'+fmt(c.orig,2)+'</b>)';
+    renderHead();
+
+    var rows = students.filter(function(s){return s.score!==null&&s.score!==undefined}).map(function(s){
+      var ns = Number(Math.min(s.score*c.factor, c.target).toFixed(c.dec));
+      var pct = ns/c.target*100, gr = gradeOf(pct);
+      return {name:s.name||"—",old:s.score,ns:ns,pct:pct,g:gr.g,gp:gr.gp};
+    });
+    if(!rows.length){
+      $("results").innerHTML='<div class="empty">নম্বর যোগ করলে এখানে ফলাফল দেখা যাবে।</div>';
+      $("actions").style.display="none"; window._rows=[]; return;
+    }
+    window._rows=rows; window._c=c;
+    var avgOld=rows.reduce(function(a,r){return a+r.old},0)/rows.length;
+    var avgNew=rows.reduce(function(a,r){return a+r.ns},0)/rows.length;
+    var pass=rows.filter(function(r){return r.g!=="F"}).length;
+    var top=Math.max.apply(null,rows.map(function(r){return r.ns}));
+
+    var html='<div class="stats">'+
+      '<div class="stat">'+ic("users")+'<div><b>'+toBn(rows.length)+'</b><span>মোট শিক্ষার্থী</span></div></div>'+
+      '<div class="stat">'+ic("avg")+'<div><b>'+fmt(avgOld,2)+' → '+fmt(avgNew,2)+'</b><span>গড় (মূল → নতুন)</span></div></div>'+
+      '<div class="stat">'+ic("top")+'<div><b>'+fmt(top,c.dec)+'</b><span>নতুন সর্বোচ্চ স্কোর</span></div></div>'+
+      '<div class="stat">'+ic("check")+'<div><b>'+toBn(pass)+' / '+toBn(rows.length)+'</b><span>উত্তীর্ণ</span></div></div></div>';
+    html+='<div class="scroll"><table><thead><tr><th>ক্রম</th><th>নাম</th><th class="num">মূল নম্বর (/'+fmt(c.orig,2)+')</th><th class="num">নতুন স্কোর (/'+fmt(c.target,2)+')</th><th class="num">শতকরা</th><th>গ্রেড</th><th class="num">জিপিএ</th></tr></thead><tbody>';
+    rows.forEach(function(r,i){
+      html+='<tr><td>'+toBn(i+1)+'</td><td>'+esc(r.name)+'</td><td class="num">'+fmt(r.old,2)+'</td><td class="num"><b>'+fmt(r.ns,c.dec)+'</b></td><td class="num">'+fmt(r.pct,1)+'%</td><td><span class="g'+(r.g==="F"?" f":"")+'">'+esc(r.g)+'</span></td><td class="num">'+fmt(r.gp,2)+'</td></tr>';
+    });
+    $("results").innerHTML=html+'</tbody></table></div>';
+    $("actions").style.display="flex";
+  }
+
+  /* ---- export ---- */
+  var HEAD=["নাম","মূল নম্বর","নতুন স্কোর","শতকরা","গ্রেড","জিপিএ"];
+  function dataRows(){return window._rows.map(function(r){return [r.name,r.old,r.ns,Number(r.pct.toFixed(1)),r.g,r.gp]})}
+  function plain(sep){return [HEAD].concat(dataRows()).map(function(r){return r.join(sep)}).join("\n")}
+  function save(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
+  $("csv").onclick=function(){save(new Blob(["\ufeff"+plain(",")],{type:"text/csv;charset=utf-8"}),"converted-scores.csv")};
+  $("copy").onclick=function(){
+    var sp=$("copy").querySelector("span");
+    if(navigator.clipboard) navigator.clipboard.writeText(plain("\t")).then(function(){sp.textContent="কপি হয়েছে ✓";setTimeout(function(){sp.textContent="কপি"},1500)},function(){});
+  };
+  $("print").onclick=function(){window.print()};
+  $("xlsx").onclick=function(){
+    if(typeof XLSX==="undefined"){alert("Excel লাইব্রেরি লোড হয়নি। CSV ডাউনলোড ব্যবহার করুন।");return}
+    var i=getInfo(), aoa=[[i.inst||""],["ব্যাচ/শ্রেণি: "+i.batch,"বিষয়: "+i.subj,"তারিখ: "+i.date],[]];
+    aoa=aoa.concat([HEAD],dataRows());
+    var wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(aoa),"Result");
+    XLSX.writeFile(wb,"converted-scores.xlsx");
+  };
+
+  /* ---- import ---- */
+  function setMsg(t,err){var m=$("fileMsg");m.textContent=t;m.className="msg"+(err?" err":"")}
+  function parseCsv(text){
+    text=text.replace(/^\ufeff/,"");
+    var rows=[],row=[],cur="",q=false;
+    for(var i=0;i<text.length;i++){
+      var ch=text[i];
+      if(q){ if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++} else q=false } else cur+=ch }
+      else if(ch==='"') q=true;
+      else if(ch===","||ch==="\t"||ch===";"){row.push(cur);cur=""}
+      else if(ch==="\n"||ch==="\r"){ if(ch==="\r"&&text[i+1]==="\n")i++; row.push(cur);rows.push(row);row=[];cur="" }
+      else cur+=ch;
+    }
+    if(cur!==""||row.length){row.push(cur);rows.push(row)}
+    return rows;
+  }
+  function importRows(rows){
+    rows=rows.filter(function(r){return r&&r.some(function(c){return String(c==null?"":c).trim()!==""})});
+    if(!rows.length){setMsg("ফাইলে কোনো তথ্য পাওয়া যায়নি।",true);return}
+    var nameIdx=0,scoreIdx=1,start=0;
+    var head=rows[0].map(function(c){return String(c==null?"":c).trim().toLowerCase()});
+    var isHeader=(head.length>1&&num(head[scoreIdx])===null)||head.some(function(h){return /নাম|নম্বর|স্কোর|name|score|mark/.test(h)});
+    if(isHeader){
+      start=1;
+      head.forEach(function(h,i){
+        if(/নাম|name/.test(h)) nameIdx=i;
+        if(/নম্বর|স্কোর|score|mark/.test(h)) scoreIdx=i;
+      });
+    }
+    var list=[],bad=0;
+    for(var i=start;i<rows.length;i++){
+      var r=rows[i], nm=String(r[nameIdx]==null?"":r[nameIdx]).trim(), sc=num(r[scoreIdx]==null?"":r[scoreIdx]);
+      if(sc===null){ if(nm) bad++; continue }
+      list.push({name:nm,score:sc});
+    }
+    if(!list.length){setMsg("কোনো বৈধ নম্বর পাওয়া যায়নি। ‘নাম’ ও ‘নম্বর’ কলাম আছে কিনা দেখুন।",true);return}
+    students=list; renderInputs(); renderResults();
+    setMsg(toBn(list.length)+" জন শিক্ষার্থীর তথ্য যোগ হয়েছে"+(bad?" ("+toBn(bad)+" টি সারিতে নম্বর অবৈধ, বাদ দেওয়া হয়েছে)":"")+"।");
+  }
+  function handleFile(f){
+    if(!f)return;
+    var ext=(f.name.split(".").pop()||"").toLowerCase(), rd=new FileReader();
+    rd.onerror=function(){setMsg("ফাইল পড়া যায়নি।",true)};
+    if(ext==="csv"){
+      rd.onload=function(){importRows(parseCsv(rd.result))};
+      rd.readAsText(f,"UTF-8");
+    } else if(ext==="xlsx"||ext==="xls"){
+      if(typeof XLSX==="undefined"){setMsg("Excel পড়ার লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ দেখুন, অথবা CSV ব্যবহার করুন।",true);return}
+      rd.onload=function(){
+        try{
+          var wb=XLSX.read(new Uint8Array(rd.result),{type:"array"});
+          importRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""}));
+        }catch(e){setMsg("Excel ফাইলটি পড়া যায়নি।",true)}
+      };
+      rd.readAsArrayBuffer(f);
+    } else setMsg("শুধু .xlsx, .xls বা .csv ফাইল দিন।",true);
+  }
+  $("file").addEventListener("change",function(e){handleFile(e.target.files[0]);e.target.value=""});
+  var dz=$("drop");
+  ["dragenter","dragover"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.add("over")})});
+  ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("over")})});
+  dz.addEventListener("drop",function(e){handleFile(e.dataTransfer.files[0])});
+
+  var demo=[["নাম","নম্বর"],["রহিম",70],["করিম",65],["সুমি",58],["নাসরিন",52],["জামাল",45],["তানিয়া",38]];
+  $("demoCsv").onclick=function(){save(new Blob(["\ufeff"+demo.map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-students.csv")};
+  $("demoXlsx").onclick=function(){
+    if(typeof XLSX==="undefined"){setMsg("Excel লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ দেখুন, অথবা ডেমো CSV নিন।",true);return}
+    var wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(demo),"Students");
+    XLSX.writeFile(wb,"demo-students.xlsx");
+  };
+
+  /* ---- manual entry ---- */
+  $("loadBulk").onclick=function(){
+    $("bulk").value.split(/\n+/).forEach(function(l){
+      l=l.trim(); if(!l)return;
+      var m=l.match(/^(.*?)[\s,;\t:]+([০-৯0-9.]+)\s*$/);
+      if(m) students.push({name:m[1].trim(),score:num(m[2])});
+      else if(num(l)!==null) students.push({name:"",score:num(l)});
+    });
+    $("bulk").value=""; renderInputs(); renderResults();
+  };
+  $("addRow").onclick=function(){students.push({name:"",score:null});renderInputs()};
+  $("clear").onclick=function(){students=[];renderInputs();renderResults()};
+  $("sample").onclick=function(){
+    students=demo.slice(1).map(function(a){return {name:a[0],score:a[1]}});
+    renderInputs(); renderResults();
+  };
+  ["orig","target","method","base","dec"].forEach(function(id){
+    $(id).addEventListener("input",renderResults);
+    $(id).addEventListener("change",renderResults);
+  });
+
+  /* ---- Adsterra ---- */
+  function adCode(id){
+    var t=$(id); if(!t) return "";
+    var h=t.innerHTML.replace(/<!--[\s\S]*?-->/g,"").trim();
+    return /<script/i.test(h) ? h : "";
+  }
+  function mountAd(slotId,tplId){
+    var el=$(slotId); if(!el) return;
+    var w=+el.dataset.w, h=+el.dataset.h, code=adCode(tplId);
+    el.innerHTML='<div class="ad-label">বিজ্ঞাপন</div>';
+    if(code){
+      var f=document.createElement("iframe");
+      f.width=w; f.height=h; f.setAttribute("scrolling","no"); f.title="বিজ্ঞাপন";
+      f.srcdoc='<!DOCTYPE html><html><head><meta charset="utf-8"><base target="_blank"></head><body style="margin:0">'+
+        code.replace(/src=(["'])\/\//gi,"src=$1https://")+'</body></html>';
+      el.appendChild(f);
+    } else {
+      var ph=document.createElement("div");
+      ph.className="ad-ph"; ph.style.width=w+"px"; ph.style.height=h+"px";
+      ph.textContent="বিজ্ঞাপন "+toBn(w)+"×"+toBn(h);
+      el.appendChild(ph);
+    }
+  }
+  var mq=window.matchMedia("(min-width:1380px)"), adDone={};
+  function loadAds(){
+    if(mq.matches){ if(!adDone.s){mountAd("slotL","ad-left");mountAd("slotR","ad-right");adDone.s=1} }
+    else if(!adDone.m){mountAd("slotM","ad-mobile");adDone.m=1}
+  }
+  function adsIfTool(){ if(location.hash!=="#tutorial") loadAds(); }
+  window.__ads=adsIfTool; adsIfTool();
+  if(mq.addEventListener) mq.addEventListener("change",adsIfTool); else if(mq.addListener) mq.addListener(adsIfTool);
+
+  renderGrades(); renderInputs(); renderResults();
+})();
+</script>
+<script>
+
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var BN="০১২৩৪৫৬৭৮৯";
+  function bn(s){return String(s).replace(/[0-9]/g,function(d){return BN[d]})}
+  function ic(n){return '<svg class="ic"><use href="#i-'+n+'"/></svg>'}
+  function d(x){return ' style="--d:'+x+'s"'}
+  var PTR=function(x){return '<span class="ptr"'+d(x)+'><svg viewBox="0 0 24 24"><path d="M5 3l14 7-6 2-2 6z"/></svg><i></i></span>'};
+  function title(i,t){return '<div class="m-t"><span class="m-b">'+ic(i)+'</span>'+t+'</div>'}
+  function bars(v,max,c,d0){return '<div class="bars">'+v.map(function(x,i){return '<div class="bc"><b>'+bn(x)+'</b><i class="bar '+c+'" style="--h:'+(x/max).toFixed(3)+';--d:'+(d0+i*.25)+'s"></i></div>'}).join('')+'</div>'}
+  function fld(i,l,t,n,x,c){return '<div class="'+(c||'')+'"><div class="m-l">'+l+'</div><div class="m-in">'+ic(i)+'<span class="typed" style="--n:'+n+';--d:'+x+'s">'+t+'</span></div></div>'}
+  var ROWS=[["রহিম",70,"৮০","A+"],["করিম",65,"৭৪.২৯","A+"],["সুমি",58,"৬৬.২৯","A+"],["নাসরিন",52,"৫৯.৪৩","A"],["জামাল",45,"৫১.৪৩","A-"],["তানিয়া",38,"৪৩.৪৩","B"]];
+
+  var S=[
+  {t:"পরিচিতি",i:"logo",d:10000,
+   c:["পরীক্ষায় কেউ <mark>৭০</mark> এর বেশি পায়নি? চিন্তা নেই!","এই টুল নম্বরকে নতুন পূর্ণমানে রূপান্তর করে, যেমন <mark>৭০ থেকে ৮০</mark>","সাথে সাথে প্রতিটি শিক্ষার্থীর <mark>নতুন স্কোর ও গ্রেড</mark> বের করে দেয়"],
+   h:function(){return '<div class="m">'+title("logo","স্কোর কনভার্টার")+'<div class="m-card"><div class="cmp"><div><div class="m-l">মূল স্কোর (/১০০)</div>'+bars([70,65,58,52],100,"o",.3)+'</div><div class="mid a-pop"'+d(1.8)+'>'+ic("swap")+'</div><div><div class="m-l">নতুন স্কোর (/৮০)</div>'+bars([80,74.3,66.3,59.4],80,"n",2.2)+'</div></div></div><div class="chips"><span class="chip a-up"'+d(.4)+'>সর্বোচ্চ ৭০</span><span class="chip n a-up"'+d(3.6)+'>সর্বোচ্চ ৮০ ✓</span></div></div>'}},
+  {t:"পরীক্ষার তথ্য",i:"building",d:9000,
+   c:["<mark>ধাপ ১:</mark> প্রতিষ্ঠানের নাম, শ্রেণি, বিষয় ও তারিখ লিখুন","এই তথ্য ফলাফল <mark>প্রিন্টের একদম উপরে</mark> বসবে"],
+   h:function(){return '<div class="m">'+title("building","পরীক্ষার তথ্য")+'<div class="m-card"><div class="m-grid">'+fld("building","প্রতিষ্ঠানের নাম","আদর্শ উচ্চ বিদ্যালয়",19,.4,"wide")+fld("users","ব্যাচ / শ্রেণি","নবম শ্রেণি",9,2.0)+fld("book","বিষয়","গণিত",4,3.2)+fld("cal","পরীক্ষার তারিখ","১২ নভেম্বর, ২০২৬",16,4.0,"wide")+'</div></div><div class="head a-up"'+d(5.6)+'><b>আদর্শ উচ্চ বিদ্যালয়</b><small>পরীক্ষার ফলাফল</small><div class="chips" style="margin-top:.3em"><span>নবম শ্রেণি</span><span>গণিত</span><span>১২ নভেম্বর, ২০২৬</span></div></div></div>'}},
+  {t:"কনভার্সন সেটিং",i:"sliders",d:11000,
+   c:["<mark>ধাপ ২:</mark> মূল পূর্ণমান ১০০ ও নতুন পূর্ণমান ৮০ দিন","‘<mark>সর্বোচ্চ নম্বর ভিত্তিক</mark>’ বাছলে সর্বোচ্চ পাওয়া নম্বরই ৮০ হয়ে যাবে","নিচের সূত্র দেখেই বুঝে নিন <mark>হিসাব কীভাবে হচ্ছে</mark>"],
+   h:function(){return '<div class="m">'+title("sliders","কনভার্সনের সেটিং")+'<div class="m-card"><div class="m-grid"><div><div class="m-l">মূল পূর্ণমান</div><div class="m-in a-pop"'+d(.3)+'><b>১০০</b></div></div><div><div class="m-l">নতুন পূর্ণমান</div><div class="m-in hl a-pop"'+d(1.3)+'><b>৮০</b></div></div></div><div class="m-l" style="margin-top:.7em">কনভার্সন পদ্ধতি</div><div class="opts"><span class="opt on a-up"'+d(2.6)+'>সর্বোচ্চ নম্বর ভিত্তিক</span><span class="opt a-up"'+d(2.8)+'>সমানুপাতিক</span></div></div><div class="tformula a-up"'+d(5)+'>'+ic("swap")+'<span>নতুন স্কোর = (মূল নম্বর ÷ <b>৭০</b>) × <b>৮০</b></span></div></div>'}},
+  {t:"নম্বর আপলোড",i:"upload",d:13000,
+   c:["<mark>ধাপ ৩:</mark> আগে ‘ডেমো Excel’ বা ‘ডেমো CSV’ নামিয়ে নাম ও নম্বর বসান","তারপর ফাইলটি এখানে <mark>ড্র্যাগ করে ছেড়ে দিন</mark>","চাইলে নাম ও নম্বর সরাসরি <mark>পেস্ট</mark> করেও দিতে পারেন"],
+   m:["<mark>ধাপ ৩:</mark> ‘ডেমো Excel’ বা ‘ডেমো CSV’ চেপে ফাইল নামান","নাম ও নম্বর বসিয়ে <mark>‘ফাইল বাছাই’</mark> চেপে ফোন থেকে আপলোড করুন","অথবা নাম ও নম্বর <mark>পেস্ট</mark> করে ‘তালিকায় যোগ করুন’ চাপুন"],
+   h:function(v){var t=v==="pc"?"ফাইল এখানে ড্র্যাগ করে ছাড়ুন":"‘ফাইল বাছাই’ চাপুন";
+     return '<div class="m">'+title("upload","শিক্ষার্থীর নম্বর")+'<div class="m-card"><div class="tdrop"><div class="dz">'+ic("file")+'<span>'+t+'</span><small>.xlsx · .xls · .csv</small></div><span class="fchip"'+d(4)+'>'+ic("file")+'marks.xlsx</span></div><div class="btns"><span class="btn pulse a-pop"'+d(.3)+'>'+ic("down")+'ডেমো Excel'+PTR(1)+'</span><span class="btn a-pop"'+d(.5)+'>'+ic("down")+'ডেমো CSV</span></div></div><div class="ok a-up"'+d(6.6)+'>'+ic("check")+'৬ জন শিক্ষার্থীর তথ্য যোগ হয়েছে</div><div class="m-card">'+["রহিম|৭০","করিম|৬৫","সুমি|৫৮"].map(function(r,i){r=r.split("|");return '<div class="rw a-up"'+d(7+i*.4)+'><span>'+r[0]+'</span><b>'+r[1]+'</b></div>'}).join("")+'</div></div>'}},
+  {t:"গ্রেডিং স্কেল",i:"award",d:9000,
+   c:["<mark>ধাপ ৪:</mark> গ্রেডিং স্কেল আগে থেকেই সাজানো আছে","আপনার নিয়ম আলাদা হলে ঘরে চাপ দিয়ে <mark>বদলে নিন</mark>"],
+   h:function(){var g=[["৮০+","A+","৫.০০"],["৭০","A","৪.০০"],["৬০","A-","৩.৫০"],["৫০","B","৩.০০"],["৪০","C","২.০০"],["৩৩","D","১.০০"],["০","F","০.০০"]];
+     return '<div class="m">'+title("award","গ্রেডিং স্কেল")+'<div class="m-card" style="padding:.3em"><table class="tb"><tr><th>ন্যূনতম %</th><th>গ্রেড</th><th>জিপিএ</th></tr>'+g.map(function(r,i){return '<tr class="a-up'+(i===1?" hl":"")+'"'+d(.3+i*.3)+'><td style="text-align:left">'+r[0]+'</td><td><span class="g">'+r[1]+'</span></td><td>'+r[2]+'</td></tr>'}).join("")+'</table></div></div>'}},
+  {t:"ফলাফল",i:"chart",d:11000,
+   c:["<mark>ধাপ ৫:</mark> ফলাফলে মূল নম্বর, নতুন স্কোর ও গ্রেড একসাথে দেখুন","<mark>গড়, সর্বোচ্চ স্কোর</mark> ও উত্তীর্ণের সংখ্যাও পাবেন"],
+   h:function(){return '<div class="m">'+title("chart","ফলাফল")+'<div class="head a-up"'+d(.2)+'><b>আদর্শ উচ্চ বিদ্যালয়</b><small>পরীক্ষার ফলাফল · গণিত</small></div><div class="stt a-up"'+d(.6)+'><div><b>৬</b>শিক্ষার্থী</div><div><b>৮০</b>সর্বোচ্চ</div><div><b>৬/৬</b>উত্তীর্ণ</div></div><div class="m-card" style="padding:.2em"><table class="tb"><tr><th>নাম</th><th>মূল</th><th>নতুন</th><th>গ্রেড</th></tr>'+ROWS.map(function(r,i){return '<tr class="a-up"'+d(1.2+i*.5)+'><td>'+r[0]+'</td><td>'+bn(r[1])+'</td><td><b>'+r[2]+'</b></td><td><span class="g a-pop"'+d(1.6+i*.5)+'>'+r[3]+'</span></td></tr>'}).join("")+'</table></div></div>'}},
+  {t:"প্রিন্ট ও ডাউনলোড",i:"print",d:11000,
+   c:["<mark>‘প্রিন্ট’</mark> চাপলে শুধু ফলাফল শিট প্রিন্ট হবে","উপরে প্রতিষ্ঠান, শ্রেণি, বিষয় ও তারিখ আসবে","<mark>Excel বা CSV</mark> হিসেবেও ফলাফল নামানো যায়"],
+   m:["<mark>‘প্রিন্ট’</mark> চেপে প্রিন্টার বাছুন, অথবা ‘PDF হিসেবে সেভ’ করুন","শুধু ফলাফল শিট প্রিন্ট হবে, উপরে প্রতিষ্ঠানের তথ্যসহ","<mark>Excel বা CSV</mark> হিসেবেও ফলাফল নামানো যায়"],
+   h:function(){return '<div class="m">'+title("print","প্রিন্ট ও ডাউনলোড")+'<div class="btns" style="margin-top:0"><span class="btn pr a-pop"'+d(.2)+'>'+ic("print")+'প্রিন্ট'+PTR(.8)+'</span><span class="btn a-pop"'+d(.4)+'>'+ic("down")+'Excel</span><span class="btn a-pop"'+d(.6)+'>'+ic("down")+'CSV</span><span class="btn a-pop"'+d(.8)+'>'+ic("copy")+'কপি</span></div><div class="paper a-up"'+d(3)+'><b>আদর্শ উচ্চ বিদ্যালয়</b><div class="chips" style="font-size:.85em"><span>নবম শ্রেণি</span><span>গণিত</span><span>১২ নভেম্বর, ২০২৬</span></div><div class="ln"></div><div class="ln" style="width:85%"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:70%"></div></div></div>'}},
+  {t:"সব ডিভাইসে",i:"laptop",d:10000,
+   c:["<mark>কম্পিউটারে</mark> ফাইল ড্র্যাগ করে ছেড়ে দিন, সবকিছু এক নজরে দেখুন","<mark>মোবাইলেও</mark> একই কাজ, শুধু ‘ফাইল বাছাই’ চেপে আপলোড করুন","ধন্যবাদ! এখন <mark>নিজের নম্বর দিয়ে</mark> চেষ্টা করুন"],
+   m:["<mark>মোবাইলে</mark> উপরে-নিচে স্ক্রল করুন, বড় টেবিল ডানে-বামে সোয়াইপ করুন","‘ফাইল বাছাই’ চেপে ফোন থেকে Excel বা CSV আপলোড করুন","ধন্যবাদ! এখন <mark>নিজের নম্বর দিয়ে</mark> চেষ্টা করুন"],
+   h:function(){return '<div class="m">'+title("check","যেকোনো ডিভাইসে একই রকম")+[["laptop","কম্পিউটারে ফাইল ড্র্যাগ করুন"],["phone","মোবাইলে ‘ফাইল বাছাই’ চাপুন"],["print","দুই জায়গাতেই প্রিন্ট ও ডাউনলোড"]].map(function(r,i){return '<div class="tip a-up"'+d(.4+i*.9)+'><span class="m-b">'+ic(r[0])+'</span>'+r[1]+'</div>'}).join("")+'</div>'}}
+  ];
+
+  var dev=window.innerWidth<700?"mob":"pc",cur=0,t=0,playing=!matchMedia("(prefers-reduced-motion:reduce)").matches,capK=-1,last=performance.now();
+  var root=document.getElementById("tut"),stage=$("stage"),scr=$("scr"),cap=$("cap"),segs=$("segs");
+  segs.innerHTML=S.map(function(s,i){return '<button class="sg" data-i="'+i+'" title="'+s.t+'"><i></i>'+ic(s.i)+'<span>'+s.t+'</span></button>'}).join("");
+  var sg=segs.children;
+  function caps(){var s=S[cur];return dev==="mob"&&s.m?s.m:s.c}
+  function setCap(h){cap.innerHTML='<span>'+h+'</span>';cap.classList.remove("in");void cap.offsetWidth;cap.classList.add("in")}
+  function mount(i){
+    cur=i;t=0;capK=-1;
+    scr.innerHTML=S[i].h(dev);
+    $("lIc").innerHTML=ic(S[i].i);$("lNo").textContent="ধাপ "+bn(i+1)+" / "+bn(S.length);$("lT").textContent=S[i].t;
+    for(var k=0;k<sg.length;k++){sg[k].className="sg"+(k<i?" d":"")+(k===i?" c":"");sg[k].firstChild.style.width=k<i?"100%":"0"}
+    var a=caps();capK=0;setCap(a[0]);
+  }
+  function sync(){
+    var end=!playing&&cur===S.length-1&&t>=S[cur].d;
+    $("bPlay").innerHTML=ic(end?"replay":playing?"pause":"play")+(end?"আবার দেখুন":playing?"থামান":"চালান");
+    stage.classList.toggle("paused",!playing);
+    $("bPc").className=dev==="pc"?"on":"";$("bMob").className=dev==="mob"?"on":"";
+    stage.classList.toggle("pc",dev==="pc");stage.classList.toggle("mob",dev==="mob");
+  }
+  function tick(now){
+    var dt=Math.min(now-last,100);last=now;
+    if(playing&&!root.hidden){
+      t+=dt;var s=S[cur],a=caps(),k=Math.min(a.length-1,Math.floor(t/s.d*a.length));
+      if(k!==capK){capK=k;setCap(a[k])}
+      sg[cur].firstChild.style.width=Math.min(100,t/s.d*100)+"%";
+      if(t>=s.d){if(cur<S.length-1)mount(cur+1);else{playing=false;sync()}}
+    }
+    requestAnimationFrame(tick);
+  }
+  $("bPlay").onclick=function(){
+    if(!playing&&cur===S.length-1&&t>=S[cur].d)mount(0);
+    playing=!playing;sync();
+  };
+  $("bPrev").onclick=function(){mount(Math.max(0,cur-(t>2000?0:1)));sync()};
+  $("bNext").onclick=function(){mount(Math.min(S.length-1,cur+1));sync()};
+  segs.onclick=function(e){var b=e.target.closest(".sg");if(b){mount(+b.dataset.i);sync()}};
+  $("bPc").onclick=function(){dev="pc";mount(cur);sync()};
+  $("bMob").onclick=function(){dev="mob";mount(cur);sync()};
+  document.addEventListener("keydown",function(e){
+    if(root.hidden)return;
+    if(e.target.tagName==="BUTTON"&&e.key===" ")return;
+    if(e.key===" "){e.preventDefault();$("bPlay").click()}
+    else if(e.key==="ArrowRight")$("bNext").click();
+    else if(e.key==="ArrowLeft")$("bPrev").click();
+  });
+  window.addEventListener("tutshow",function(){mount(cur);sync()});
+  mount(0);sync();requestAnimationFrame(tick);
+})();
+
+</script>
+<script>
+(function(){
+  var tool=document.getElementById("viewTool"),tut=document.getElementById("tut"),tabs=document.querySelectorAll(".tab");
+  function route(){
+    var isT=location.hash==="#tutorial";
+    tool.hidden=isT; tut.hidden=!isT;
+    Array.prototype.forEach.call(tabs,function(a){a.classList.toggle("on",(a.dataset.v==="tut")===isT)});
+    document.title=isT?"টিউটোরিয়াল — স্কোর কনভার্টার":"স্কোর কনভার্টার";
+    window.scrollTo(0,0);
+    if(isT) window.dispatchEvent(new Event("tutshow")); else if(window.__ads) window.__ads();
+  }
+  window.addEventListener("hashchange",route); route();
+})();
+</script>
+</body>
+</html>
