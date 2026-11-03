@@ -145,10 +145,10 @@ footer a:hover{color:#63f8df;text-decoration:underline}
 @media print{
   :root{--bg:#fff;--card:#fff;--ink:#000;--mute:#333;--line:#999;--soft:#fff;--soft2:#ddd;--accent:#000;--warn:#000;--shadow:none}
   body{background:#fff}
-  .nav,.hero-link,.ad,.hero,.step:not(#sResult),#actions,footer,#sResult .rail,#sResult h2{display:none!important}
+  .nav,.hero-link,.ad,.hero,.step:not(#sResult):not(#ieResult),#actions,#ieActions,footer,#sResult .rail,#sResult h2,#ieResult .rail,#ieResult h2{display:none!important}
   .wrap{margin:0;padding:0;max-width:none}
-  #sResult{display:block;padding:0}
-  #sResult .card{border:0;padding:0;box-shadow:none}
+  #sResult,#ieResult{display:block;padding:0}
+  #sResult .card,#ieResult .card{border:0;padding:0;box-shadow:none}
   .sheet-head{border:0;border-bottom:2px solid #000;border-radius:0;background:#fff;padding:0 0 10px}
   .sheet-head::before,.ph{display:none!important}
   .stat{border:1px solid #999}
@@ -156,6 +156,15 @@ footer a:hover{color:#63f8df;text-decoration:underline}
   table{min-width:0}
   th,td{padding:6px 8px}
 }
+
+/* ielts page + misc */
+.presets{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.presets span{color:var(--mute);font-size:.9rem}
+.presets button{border-radius:99px;padding:5px 14px;font-size:.9rem}
+.warn{color:var(--warn);font-size:.92rem;margin:0 0 12px;font-weight:600}
+.g.big{font-size:1.1em;min-width:3.2em;padding:2px 10px;background:var(--accent);color:var(--accent-ink)}
+td select{width:100%}
+@media (max-width:420px){.tab{padding:7px 10px;font-size:.85rem}.tab .ic{display:none}}
 
 /* ===== tutorial (scoped) ===== */
 #tut .top{background:linear-gradient(135deg,#011814,#034439 65%,#05705e);color:#fff;padding:22px 16px}
@@ -313,6 +322,7 @@ footer a:hover{color:#63f8df;text-decoration:underline}
   <a class="brand" href="#tool"><span class="lg"><svg class="ic"><use href="#i-logo"/></svg></span><span>স্কোর কনভার্টার</span></a>
   <div class="tabs">
     <a class="tab on" data-v="tool" href="#tool"><svg class="ic"><use href="#i-chart"/></svg>কনভার্টার</a>
+    <a class="tab" data-v="ielts" href="#ielts"><svg class="ic"><use href="#i-award"/></svg>ব্যান্ড স্কোর</a>
     <a class="tab" data-v="tut" href="#tutorial"><svg class="ic"><use href="#i-play"/></svg>টিউটোরিয়াল</a>
   </div>
 </div></nav>
@@ -325,6 +335,7 @@ footer a:hover{color:#63f8df;text-decoration:underline}
       <p class="sub">পরীক্ষার নম্বর নতুন পূর্ণমানে রূপান্তর করুন এবং প্রতিটি শিক্ষার্থীর নতুন স্কোর ও গ্রেড দেখুন।</p>
       <div class="strip" aria-hidden="true"><i style="background:#e7fefa"></i><i style="background:#bbfcf1"></i><i style="background:#8ffae8"></i><i style="background:#63f8df"></i><i style="background:#27f5d3"></i><i style="background:#0bf4cd"></i><i style="background:#079c83"></i><i style="background:#05705e"></i><i style="background:#034439"></i><i style="background:#011814"></i></div>
       <a class="hero-link" href="#tutorial"><svg class="ic"><use href="#i-play"/></svg>কীভাবে কাজ করে? টিউটোরিয়াল দেখুন</a>
+      <a class="hero-link" href="#ielts" style="margin-left:8px;background:#e7fefa"><svg class="ic"><use href="#i-award"/></svg>ব্যান্ড স্কোর কনভার্টার</a>
     </div>
     <svg class="art" viewBox="0 0 170 120" aria-hidden="true">
       <line x1="8" y1="106" x2="162" y2="106" stroke="#8ffae8" stroke-width="2" stroke-linecap="round" opacity=".6"/>
@@ -375,6 +386,7 @@ footer a:hover{color:#63f8df;text-decoration:underline}
       </div>
       <div class="formula"><svg class="ic"><use href="#i-swap"/></svg><span id="formula"></span></div>
       <div class="hint">সর্বোচ্চ নম্বর ভিত্তিক: যিনি সবচেয়ে বেশি পেয়েছেন (যেমন ৭০) তিনি নতুন পূর্ণমান (যেমন ৮০) পাবেন, বাকিরা সেই অনুপাতে।</div>
+      <div class="hint">মূল ও নতুন পূর্ণমান নিজের মতো বসান (যেমন ১০ → ১০০, ১৫ → ১০০ বা ১০০ → ৮০)। ছোট পূর্ণমান থেকে বড় করতে ‘সমানুপাতিক’ পদ্ধতি বাছুন।</div>
     </div>
   </section>
 
@@ -443,6 +455,76 @@ footer a:hover{color:#63f8df;text-decoration:underline}
 <div class="ad ad-m" id="slotM" data-w="300" data-h="250" aria-label="বিজ্ঞাপন"></div>
 
 </div>
+
+<section id="viewIelts" hidden>
+<header class="hero"><div class="hero-in"><div>
+  <h1><span class="logo"><svg class="ic"><use href="#i-award"/></svg></span>ব্যান্ড স্কোর কনভার্টার</h1>
+  <p class="sub">Listening, Reading, Writing, Speaking, Grammar ইত্যাদি বিষয়ের স্কোর বসান বা ফাইল আপলোড করুন, Overall Band Score বের হয়ে আসবে।</p>
+  <div class="strip" aria-hidden="true"><i style="background:#e7fefa"></i><i style="background:#bbfcf1"></i><i style="background:#8ffae8"></i><i style="background:#63f8df"></i><i style="background:#27f5d3"></i><i style="background:#0bf4cd"></i><i style="background:#079c83"></i><i style="background:#05705e"></i><i style="background:#034439"></i><i style="background:#011814"></i></div>
+</div></div><div class="ruler" aria-hidden="true"></div></header>
+<main class="wrap">
+  <section class="step" id="ieInfo">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-building"/></svg><em>১</em></div></div>
+    <div class="card">
+      <h2>রিপোর্টের তথ্য<small>ঐচ্ছিক। প্রিন্টের উপরে বসবে</small></h2>
+      <div class="grid">
+        <div class="wide"><label for="ieInst">প্রতিষ্ঠানের নাম</label><div class="inp"><svg class="ic"><use href="#i-building"/></svg><input id="ieInst" placeholder="যেমন: ABC Academy"></div></div>
+        <div><label for="ieBatch">ব্যাচ / শ্রেণি</label><div class="inp"><svg class="ic"><use href="#i-users"/></svg><input id="ieBatch" placeholder="যেমন: Batch 12"></div></div>
+        <div><label for="ieDate">পরীক্ষার তারিখ</label><div class="inp"><svg class="ic"><use href="#i-cal"/></svg><input id="ieDate" type="date"></div></div>
+      </div></div>
+  </section>
+  <section class="step" id="ieSubj">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-sliders"/></svg><em>২</em></div></div>
+    <div class="card">
+      <h2>বিষয় ও কনভার্সন পদ্ধতি<small>নাম লিখলেই পদ্ধতি নিজে বাছা হয়, চাইলে বদলান</small></h2>
+      <div class="scroll"><table style="min-width:600px">
+        <thead><tr><th>বিষয়</th><th style="width:110px">পূর্ণমান</th><th style="width:210px">পদ্ধতি</th><th style="width:70px;text-align:center">গণনায়</th><th style="width:50px"></th></tr></thead>
+        <tbody id="ieSubBody"></tbody>
+      </table></div>
+      <datalist id="ieNames"><option value="Listening"><option value="Reading"><option value="Writing"><option value="Speaking"><option value="Grammar"><option value="Vocabulary"><option value="Pronunciation"></datalist>
+      <div class="row">
+        <button class="primary" id="ieAddSub"><svg class="ic"><use href="#i-plus"/></svg>বিষয় যোগ</button>
+        <button id="ie4">৪ স্কিল</button>
+        <button id="ie5">৪ স্কিল + Grammar</button>
+      </div>
+      <div class="hint">Listening ও Reading এর টেবিল ৪০ নম্বরের প্রচলিত আনুমানিক কনভার্সন, আসল পরীক্ষায় সামান্য ভিন্ন হতে পারে। পূর্ণমান ৪০ না হলে ৪০ এ স্কেল করে নেওয়া হয়। Writing ও Speaking এর ব্যান্ড (০–৯) সরাসরি বসান। Grammar-এর মতো অন্য বিষয়ে ‘সমানুপাতিক’ ব্যবহার হয়। সাধারণত শুধু ৪ স্কিল ধরা হয়, অন্য বিষয় বাদ দিতে ‘গণনায়’ এর টিক তুলুন।</div></div>
+  </section>
+  <section class="step" id="ieData">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-upload"/></svg><em>৩</em></div></div>
+    <div class="card">
+      <h2>প্রার্থীর নম্বর দিন</h2>
+      <div class="drop" id="ieDrop">
+        <label for="ieFile"><svg class="ic"><use href="#i-file"/></svg><b>Excel (.xlsx) বা CSV ফাইল আপলোড করুন</b></label>
+        <div class="hint" style="margin:2px 0 8px">প্রথম কলাম ‘নাম’, বাকি কলামের শিরোনাম বিষয়ের নাম। পূর্ণমান লিখতে চাইলে Grammar/50 বা Grammar (50) লিখুন। একজনের জন্য ‘বিষয়, নম্বর’ দুই কলামের ফাইলও চলে।</div>
+        <input type="file" id="ieFile" accept=".xlsx,.xls,.csv">
+        <div class="row" style="margin-top:10px">
+          <button id="ieDemoXlsx"><svg class="ic"><use href="#i-down"/></svg>ডেমো Excel</button>
+          <button id="ieDemoCsv"><svg class="ic"><use href="#i-down"/></svg>ডেমো CSV</button>
+          <button id="ieSample">উদাহরণ দেখুন</button>
+        </div>
+        <div class="msg" id="ieMsg"></div>
+      </div>
+      <div class="hint" style="margin:0 0 8px">অথবা নিচের টেবিলে নিজে নম্বর বসান:</div>
+      <div class="scroll"><table style="min-width:560px"><thead id="ieStuHead"></thead><tbody id="ieStuBody"></tbody></table></div>
+      <div class="row">
+        <button class="primary" id="ieAddStu"><svg class="ic"><use href="#i-plus"/></svg>প্রার্থী যোগ</button>
+        <button id="ieClear"><svg class="ic"><use href="#i-trash"/></svg>নম্বর মুছুন</button>
+      </div></div>
+  </section>
+  <section class="step" id="ieResult">
+    <div class="rail"><div class="badge"><svg class="ic"><use href="#i-chart"/></svg><em>৪</em></div></div>
+    <div class="card">
+      <h2>ফলাফল</h2>
+      <div class="sheet-head" id="ieHead"></div>
+      <div id="ieRes"></div>
+      <div class="row" id="ieActions" style="display:none">
+        <button class="primary" id="iePrint"><svg class="ic"><use href="#i-print"/></svg>প্রিন্ট</button>
+        <button id="ieXlsx"><svg class="ic"><use href="#i-down"/></svg>Excel</button>
+        <button id="ieCsv"><svg class="ic"><use href="#i-down"/></svg>CSV</button>
+      </div></div>
+  </section>
+</main>
+</section>
 
 <section id="tut" hidden>
 <div class="top"><div class="top-in">
@@ -589,6 +671,7 @@ footer a:hover{color:#63f8df;text-decoration:underline}
     $("formula").innerHTML = c.method==="top"
       ? 'নতুন স্কোর = (মূল নম্বর ÷ <b>'+fmt(c.base,2)+'</b>) × <b>'+fmt(c.target,2)+'</b>'
       : 'নতুন স্কোর = মূল নম্বর × (<b>'+fmt(c.target,2)+'</b> ÷ <b>'+fmt(c.orig,2)+'</b>)';
+    if(c.method==="top"&&c.target>c.orig)$("formula").innerHTML+=' <small style="color:var(--warn)">(ছোট থেকে বড় করতে ‘সমানুপাতিক’ বাছুন)</small>';
     renderHead();
 
     var rows = students.filter(function(s){return s.score!==null&&s.score!==undefined}).map(function(s){
@@ -606,7 +689,8 @@ footer a:hover{color:#63f8df;text-decoration:underline}
     var pass=rows.filter(function(r){return r.g!=="F"}).length;
     var top=Math.max.apply(null,rows.map(function(r){return r.ns}));
 
-    var html='<div class="stats">'+
+    var over=c.method==="ratio"&&students.some(function(s){return s.score!=null&&s.score>c.orig});
+    var html=(over?'<p class="warn">কিছু নম্বর মূল পূর্ণমান ('+fmt(c.orig,2)+') এর চেয়ে বেশি। মূল পূর্ণমান ঠিক আছে কিনা দেখুন।</p>':'')+'<div class="stats">'+
       '<div class="stat">'+ic("users")+'<div><b>'+toBn(rows.length)+'</b><span>মোট শিক্ষার্থী</span></div></div>'+
       '<div class="stat">'+ic("avg")+'<div><b>'+fmt(avgOld,2)+' → '+fmt(avgNew,2)+'</b><span>গড় (মূল → নতুন)</span></div></div>'+
       '<div class="stat">'+ic("top")+'<div><b>'+fmt(top,c.dec)+'</b><span>নতুন সর্বোচ্চ স্কোর</span></div></div>'+
@@ -702,12 +786,13 @@ footer a:hover{color:#63f8df;text-decoration:underline}
   ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("over")})});
   dz.addEventListener("drop",function(e){handleFile(e.dataTransfer.files[0])});
 
-  var demo=[["নাম","নম্বর"],["রহিম",70],["করিম",65],["সুমি",58],["নাসরিন",52],["জামাল",45],["তানিয়া",38]];
-  $("demoCsv").onclick=function(){save(new Blob(["\ufeff"+demo.map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-students.csv")};
+  var DEMO=[["রহিম",70],["করিম",65],["সুমি",58],["নাসরিন",52],["জামাল",45],["তানিয়া",38]];
+  function demoRows(){var o=num($("orig").value)||100;return [["নাম","নম্বর"]].concat(DEMO.map(function(r){return [r[0],Math.round(r[1]*o/10)/10]}))}
+  $("demoCsv").onclick=function(){save(new Blob(["\ufeff"+demoRows().map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-students.csv")};
   $("demoXlsx").onclick=function(){
     if(typeof XLSX==="undefined"){setMsg("Excel লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ দেখুন, অথবা ডেমো CSV নিন।",true);return}
     var wb=XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(demo),"Students");
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(demoRows()),"Students");
     XLSX.writeFile(wb,"demo-students.xlsx");
   };
 
@@ -724,7 +809,7 @@ footer a:hover{color:#63f8df;text-decoration:underline}
   $("addRow").onclick=function(){students.push({name:"",score:null});renderInputs()};
   $("clear").onclick=function(){students=[];renderInputs();renderResults()};
   $("sample").onclick=function(){
-    students=demo.slice(1).map(function(a){return {name:a[0],score:a[1]}});
+    students=demoRows().slice(1).map(function(a){return {name:a[0],score:a[1]}});
     renderInputs(); renderResults();
   };
   ["orig","target","method","base","dec"].forEach(function(id){
@@ -760,10 +845,11 @@ footer a:hover{color:#63f8df;text-decoration:underline}
     if(mq.matches){ if(!adDone.s){mountAd("slotL","ad-left");mountAd("slotR","ad-right");adDone.s=1} }
     else if(!adDone.m){mountAd("slotM","ad-mobile");adDone.m=1}
   }
-  function adsIfTool(){ if(location.hash!=="#tutorial") loadAds(); }
+  function adsIfTool(){ if(location.hash!=="#tutorial"&&location.hash!=="#ielts") loadAds(); }
   window.__ads=adsIfTool; adsIfTool();
   if(mq.addEventListener) mq.addEventListener("change",adsIfTool); else if(mq.addListener) mq.addListener(adsIfTool);
 
+  window.__u={toBn:toBn,num:num,esc:esc,fmtDate:fmtDate,parseCsv:parseCsv,save:save};
   renderGrades(); renderInputs(); renderResults();
 })();
 </script>
@@ -866,16 +952,233 @@ footer a:hover{color:#63f8df;text-decoration:underline}
 </script>
 <script>
 (function(){
-  var tool=document.getElementById("viewTool"),tut=document.getElementById("tut"),tabs=document.querySelectorAll(".tab");
-  function route(){
-    var isT=location.hash==="#tutorial";
-    tool.hidden=isT; tut.hidden=!isT;
-    Array.prototype.forEach.call(tabs,function(a){a.classList.toggle("on",(a.dataset.v==="tut")===isT)});
-    document.title=isT?"টিউটোরিয়াল — স্কোর কনভার্টার":"স্কোর কনভার্টার";
-    window.scrollTo(0,0);
-    if(isT) window.dispatchEvent(new Event("tutshow")); else if(window.__ads) window.__ads();
+  var U=window.__u,$=function(i){return document.getElementById(i)},bn=U.toBn,num=U.num,esc=U.esc;
+  function ic(n){return '<svg class="ic"><use href="#i-'+n+'"/></svg>'}
+  var M=[["L","Listening টেবিল (৪০)"],["R","Academic Reading (৪০)"],["G","General Reading (৪০)"],["P","সমানুপাতিক (০–৯)"],["B","সরাসরি ব্যান্ড (০–৯)"]];
+  var TB={
+    L:[[39,9],[37,8.5],[35,8],[32,7.5],[30,7],[26,6.5],[23,6],[18,5.5],[16,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5]],
+    R:[[39,9],[37,8.5],[35,8],[33,7.5],[30,7],[27,6.5],[23,6],[19,5.5],[15,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5]],
+    G:[[40,9],[39,8.5],[37,8],[36,7.5],[34,7],[32,6.5],[30,6],[27,5.5],[23,5],[19,4.5],[15,4],[12,3.5],[9,3],[6,2.5]]};
+  var LV=["Did not attempt","Non user","Intermittent user","Extremely limited user","Limited user","Modest user","Competent user","Good user","Very good user","Expert user"];
+  var subs=[],stu=[],R=[];
+
+  function guess(n){
+    if(/listen|লিসেন|শোনা/i.test(n))return{m:"L",tot:40};
+    if(/read|রিডিং|পড়া/i.test(n))return{m:"R",tot:40};
+    if(/writ|speak|রাইটিং|স্পিক|লেখা|বলা/i.test(n))return{m:"B",tot:9};
+    return{m:"P",tot:100};
   }
-  window.addEventListener("hashchange",route); route();
+  function mk(n,tot){var g=guess(n);return{n:n,m:g.m,tot:tot||g.tot,auto:true,inc:true}}
+  function blank(){return{name:"",v:subs.map(function(){return null})}}
+  function setSubs(list){subs=list;stu=stu.map(function(st){return{name:st.name,v:subs.map(function(){return null})}});if(!stu.length)stu=[blank()]}
+  function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+  function band(s,v){
+    if(v==null)return null;
+    if(s.m==="B")return clamp(Math.round(v*2)/2,0,9);
+    if(s.m==="P")return clamp(Math.round(v/(s.tot||1)*18)/2,0,9);
+    var raw=Math.round(s.tot===40?v:v/(s.tot||40)*40),t=TB[s.m];
+    for(var i=0;i<t.length;i++)if(raw>=t[i][0])return t[i][1];
+    return raw>=2?2:raw>=1?1:0;
+  }
+  function overall(bs){
+    var a=[];subs.forEach(function(s,i){if(s.inc&&bs[i]!=null)a.push(bs[i])});
+    if(!a.length)return null;
+    var x=a.reduce(function(p,c){return p+c},0)/a.length,f=Math.floor(x+1e-9),r=x-f;
+    return r<.25-1e-9?f:r<.75-1e-9?f+.5:f+1;
+  }
+  function fb(b){return b==null?"—":bn(b.toFixed(1))}
+
+  /* info */
+  var infoIds=["ieInst","ieBatch","ieDate"];
+  try{var sv=JSON.parse(localStorage.getItem("ieInfo")||"{}");infoIds.forEach(function(k){if(sv[k])$(k).value=sv[k]})}catch(e){}
+  infoIds.forEach(function(k){$(k).addEventListener("input",function(){
+    try{var o={};infoIds.forEach(function(i){o[i]=$(i).value});localStorage.setItem("ieInfo",JSON.stringify(o))}catch(e){}
+    rRes();
+  })});
+  function info(){return{inst:$("ieInst").value.trim(),batch:$("ieBatch").value.trim(),date:U.fmtDate($("ieDate").value)}}
+  function head(){
+    var i=info(),h=i.inst?'<h3>'+esc(i.inst)+'</h3>':'<h3 class="ph">প্রতিষ্ঠানের নাম</h3>';
+    h+='<div class="t">ব্যান্ড স্কোর রিপোর্ট</div><div class="meta">';
+    if(i.batch)h+='<span>'+ic("users")+esc(i.batch)+'</span>';
+    if(i.date)h+='<span>'+ic("cal")+esc(i.date)+'</span>';
+    return h+'</div><div class="conv">Overall = গণনায় ধরা বিষয়গুলোর গড় ব্যান্ড, ০.৫ ধাপে রাউন্ড করা</div>';
+  }
+
+  /* subjects table */
+  function rSubs(){
+    $("ieSubBody").innerHTML=subs.map(function(s,i){
+      return '<tr><td><input list="ieNames" value="'+esc(s.n)+'" data-i="'+i+'" data-k="n" placeholder="বিষয়ের নাম"></td>'+
+        '<td><input type="number" min="1" step="any" value="'+(s.m==="B"?9:s.tot)+'" data-i="'+i+'" data-k="tot"'+(s.m==="B"?" disabled":"")+'></td>'+
+        '<td><select data-i="'+i+'" data-k="m">'+M.map(function(m){return '<option value="'+m[0]+'"'+(m[0]===s.m?" selected":"")+'>'+m[1]+'</option>'}).join("")+'</select></td>'+
+        '<td style="text-align:center"><input type="checkbox" style="width:auto" data-i="'+i+'" data-k="inc"'+(s.inc?" checked":"")+'></td>'+
+        '<td><button class="x" data-del="'+i+'" aria-label="মুছুন">'+ic("x")+'</button></td></tr>';
+    }).join("");
+  }
+  $("ieSubBody").addEventListener("input",function(e){
+    var t=e.target,i=t.dataset.i,k=t.dataset.k;if(i==null)return;
+    var s=subs[i],row=t.closest("tr");
+    if(k==="n"){
+      s.n=t.value;
+      if(s.auto){var g=guess(t.value);if(g.m!==s.m){s.m=g.m;if(g.m!=="P")s.tot=g.tot;
+        row.querySelector('[data-k="m"]').value=s.m;
+        var ti=row.querySelector('[data-k="tot"]');ti.value=s.m==="B"?9:s.tot;ti.disabled=s.m==="B";rStu()}}
+    } else if(k==="tot"){s.tot=num(t.value)||1;rStu()}
+    else if(k==="m"){
+      s.m=t.value;s.auto=false;
+      if(s.m==="L"||s.m==="R"||s.m==="G")s.tot=40;
+      var ti2=row.querySelector('[data-k="tot"]');ti2.value=s.m==="B"?9:s.tot;ti2.disabled=s.m==="B";rStu();
+    } else if(k==="inc"){s.inc=t.checked}
+    rStuHead();rRes();
+  });
+  $("ieSubBody").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-del]");if(!b)return;
+    var i=+b.dataset.del;subs.splice(i,1);stu.forEach(function(st){st.v.splice(i,1)});
+    rSubs();rStuHead();rStu();rRes();
+  });
+  $("ieAddSub").onclick=function(){subs.push(mk(""));stu.forEach(function(st){st.v.push(null)});rSubs();rStuHead();rStu();rRes()};
+  $("ie4").onclick=function(){setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking")]);full()};
+  $("ie5").onclick=function(){setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking"),mk("Grammar",50)]);full()};
+
+  /* students table */
+  function rStuHead(){
+    $("ieStuHead").innerHTML='<tr><th style="width:44px">ক্রম</th><th style="min-width:130px">নাম</th>'+
+      subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(s.m==="B"?" (০–৯)":" /"+bn(s.tot))+'</th>'}).join("")+'<th style="width:44px"></th></tr>';
+  }
+  function rStu(){
+    $("ieStuBody").innerHTML=stu.map(function(st,r){
+      return '<tr><td>'+bn(r+1)+'</td><td><input value="'+esc(st.name)+'" data-r="'+r+'" data-k="name" placeholder="নাম"></td>'+
+        subs.map(function(s,i){return '<td><input type="number" min="0" max="'+(s.m==="B"?9:s.tot)+'" step="any" value="'+(st.v[i]==null?"":st.v[i])+'" data-r="'+r+'" data-c="'+i+'"></td>'}).join("")+
+        '<td><button class="x" data-del="'+r+'" aria-label="মুছুন">'+ic("x")+'</button></td></tr>';
+    }).join("");
+  }
+  $("ieStuBody").addEventListener("input",function(e){
+    var t=e.target,r=t.dataset.r;if(r==null)return;
+    if(t.dataset.k==="name")stu[r].name=t.value;else stu[r].v[+t.dataset.c]=num(t.value);
+    rRes();
+  });
+  $("ieStuBody").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-del]");if(!b)return;
+    stu.splice(+b.dataset.del,1);if(!stu.length)stu=[blank()];rStu();rRes();
+  });
+  $("ieAddStu").onclick=function(){stu.push(blank());rStu()};
+  $("ieClear").onclick=function(){stu=[blank()];rStu();rRes()};
+  function full(){rSubs();rStuHead();rStu();rRes()}
+
+  /* results */
+  function rRes(){
+    $("ieHead").innerHTML=head();
+    R=[];var over=false;
+    stu.forEach(function(st){
+      if(!st.v.some(function(x){return x!=null}))return;
+      st.v.forEach(function(x,i){if(x!=null&&(x>(subs[i].m==="B"?9:subs[i].tot)||x<0))over=true});
+      var bs=subs.map(function(s,i){return band(s,st.v[i])});
+      R.push({name:st.name||"—",raw:st.v,b:bs,o:overall(bs)});
+    });
+    if(!R.length){$("ieRes").innerHTML='<div class="empty">নম্বর যোগ করলে এখানে Overall Band Score দেখা যাবে।</div>';$("ieActions").style.display="none";return}
+    var os=R.map(function(r){return r.o}).filter(function(x){return x!=null});
+    var avg=os.length?os.reduce(function(a,b){return a+b},0)/os.length:null,best=os.length?Math.max.apply(null,os):null;
+    var h=(over?'<p class="warn">কিছু নম্বর পূর্ণমানের চেয়ে বেশি বা ঋণাত্মক। ঘরগুলো আবার দেখুন।</p>':'')+
+      '<div class="stats"><div class="stat">'+ic("users")+'<div><b>'+bn(R.length)+'</b><span>মোট প্রার্থী</span></div></div>'+
+      '<div class="stat">'+ic("avg")+'<div><b>'+(avg==null?"—":bn(avg.toFixed(2)))+'</b><span>গড় Overall Band</span></div></div>'+
+      '<div class="stat">'+ic("top")+'<div><b>'+fb(best)+'</b><span>সর্বোচ্চ Overall Band</span></div></div></div>'+
+      '<div class="scroll"><table><thead><tr><th>নাম</th>'+subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(s.inc?"":" *")+'</th>'}).join("")+'<th class="num">Overall</th><th>Level</th></tr></thead><tbody>';
+    R.forEach(function(r){
+      h+='<tr><td>'+esc(r.name)+'</td>'+subs.map(function(s,i){
+        return '<td class="num"'+(s.inc?"":' style="opacity:.55"')+'><b>'+fb(r.b[i])+'</b>'+(r.raw[i]!=null&&s.m!=="B"?'<small style="display:block;color:var(--mute);font-size:.75em">'+bn(r.raw[i])+'/'+bn(s.tot)+'</small>':"")+'</td>'}).join("")+
+        '<td class="num"><span class="g big">'+fb(r.o)+'</span></td><td>'+(r.o==null?"—":LV[Math.floor(r.o)])+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(subs.some(function(s){return !s.inc}))h+='<div class="hint">* চিহ্নিত বিষয় Overall গণনায় ধরা হয়নি।</div>';
+    $("ieRes").innerHTML=h;$("ieActions").style.display="flex";
+  }
+
+  /* export */
+  function tdata(){
+    var h=["নাম"];subs.forEach(function(s){h.push(s.n+" (নম্বর)");h.push(s.n+" (ব্যান্ড)")});h.push("Overall Band","Level");
+    return [h].concat(R.map(function(r){
+      var a=[r.name];subs.forEach(function(s,i){a.push(r.raw[i]==null?"":r.raw[i]);a.push(r.b[i]==null?"":r.b[i])});
+      a.push(r.o==null?"":r.o,r.o==null?"":LV[Math.floor(r.o)]);return a}));
+  }
+  function q(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+  $("ieCsv").onclick=function(){U.save(new Blob(["\ufeff"+tdata().map(function(r){return r.map(q).join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"band-scores.csv")};
+  $("ieXlsx").onclick=function(){
+    if(typeof XLSX==="undefined"){alert("Excel লাইব্রেরি লোড হয়নি। CSV ব্যবহার করুন।");return}
+    var i=info(),aoa=[[i.inst||""],["শ্রেণি/ব্যাচ: "+i.batch,"তারিখ: "+i.date],[]].concat(tdata());
+    var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(aoa),"Band Scores");XLSX.writeFile(wb,"band-scores.xlsx");
+  };
+  $("iePrint").onclick=function(){window.print()};
+
+  /* import */
+  function msg(t,err){var m=$("ieMsg");m.textContent=t;m.className="msg"+(err?" err":"")}
+  function ph(h){var m=/^(.*?)\s*(?:\/|\()\s*(\d+(?:\.\d+)?)\s*\)?\s*$/.exec(h);return m&&m[1]?{n:m[1].trim(),tot:+m[2]}:{n:h}}
+  function mkh(p){var s=mk(p.n);if(p.tot&&s.m!=="B")s.tot=p.tot;return s}
+  function cell(r,i){return r[i]==null?"":r[i]}
+  function imp(rows){
+    rows=rows.filter(function(r){return r&&r.some(function(c){return String(c==null?"":c).trim()!==""})});
+    if(rows.length<2){msg("ফাইলে যথেষ্ট তথ্য নেই।",true);return}
+    var hd=rows[0].map(function(c){return String(c==null?"":c).trim()}),ns=[],list=[];
+    if(hd.length>=2&&/subject|বিষয়/i.test(hd[0])&&/score|নম্বর|মার্ক|mark/i.test(hd[1])){
+      var v=[];
+      rows.slice(1).forEach(function(r){
+        var n=String(cell(r,0)).trim(),sc=num(cell(r,1));
+        if(n&&sc!==null){var p=ph(n),tt=num(cell(r,2));if(tt)p.tot=tt;ns.push(mkh(p));v.push(sc)}});
+      if(!ns.length){msg("কোনো বৈধ বিষয় বা নম্বর পাওয়া যায়নি।",true);return}
+      subs=ns;stu=[{name:"",v:v}];
+    } else {
+      var nc=/নাম|name|student|roll|রোল|\bid\b/i.test(hd[0])?0:-1,cols=[];
+      hd.forEach(function(h,i){if(i!==nc&&h)cols.push(i)});
+      if(!cols.length){msg("বিষয়ের কলাম পাওয়া যায়নি।",true);return}
+      subs=cols.map(function(i){return mkh(ph(hd[i]))});
+      rows.slice(1).forEach(function(r){
+        var v=cols.map(function(i){return num(cell(r,i))});
+        if(v.some(function(x){return x!==null}))list.push({name:nc>=0?String(cell(r,nc)).trim():"",v:v});
+      });
+      if(!list.length){msg("কোনো বৈধ নম্বর পাওয়া যায়নি।",true);return}
+      stu=list;
+    }
+    full();msg(bn(stu.length)+" জন প্রার্থী ও "+bn(subs.length)+"টি বিষয়ের তথ্য যোগ হয়েছে।");
+  }
+  function handle(f){
+    if(!f)return;
+    var ext=(f.name.split(".").pop()||"").toLowerCase(),rd=new FileReader();
+    rd.onerror=function(){msg("ফাইল পড়া যায়নি।",true)};
+    if(ext==="csv"){rd.onload=function(){imp(U.parseCsv(rd.result))};rd.readAsText(f,"UTF-8")}
+    else if(ext==="xlsx"||ext==="xls"){
+      if(typeof XLSX==="undefined"){msg("Excel পড়ার লাইব্রেরি লোড হয়নি। CSV ব্যবহার করুন।",true);return}
+      rd.onload=function(){try{var wb=XLSX.read(new Uint8Array(rd.result),{type:"array"});imp(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""}))}catch(x){msg("Excel ফাইলটি পড়া যায়নি।",true)}};
+      rd.readAsArrayBuffer(f);
+    } else msg("শুধু .xlsx, .xls বা .csv ফাইল দিন।",true);
+  }
+  $("ieFile").addEventListener("change",function(e){handle(e.target.files[0]);e.target.value=""});
+  var dz=$("ieDrop");
+  ["dragenter","dragover"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.add("over")})});
+  ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("over")})});
+  dz.addEventListener("drop",function(e){handle(e.dataTransfer.files[0])});
+  var DEMO=[["নাম","Listening/40","Reading/40","Writing","Speaking","Grammar/50"],["রহিম",32,30,6.5,7,42],["করিম",26,24,6,6,35],["সুমি",36,35,7.5,8,46],["নাসরিন",20,18,5.5,5.5,30]];
+  $("ieDemoCsv").onclick=function(){U.save(new Blob(["\ufeff"+DEMO.map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-band.csv")};
+  $("ieDemoXlsx").onclick=function(){
+    if(typeof XLSX==="undefined"){msg("Excel লাইব্রেরি লোড হয়নি। ডেমো CSV নিন।",true);return}
+    var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(DEMO),"Candidates");XLSX.writeFile(wb,"demo-band.xlsx");
+  };
+  $("ieSample").onclick=function(){imp(DEMO)};
+
+  setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking"),mk("Grammar",50)]);
+  full();
+})();
+
+</script>
+<script>
+(function(){
+  var V={tool:document.getElementById("viewTool"),ielts:document.getElementById("viewIelts"),tut:document.getElementById("tut")},tabs=document.querySelectorAll(".tab");
+  var T={tool:"স্কোর কনভার্টার",ielts:"ব্যান্ড স্কোর কনভার্টার",tut:"টিউটোরিয়াল — স্কোর কনভার্টার"};
+  function route(){
+    var k=location.hash==="#tutorial"?"tut":location.hash==="#ielts"?"ielts":"tool";
+    for(var n in V)V[n].hidden=(n!==k);
+    Array.prototype.forEach.call(tabs,function(a){a.classList.toggle("on",a.dataset.v===k)});
+    document.title=T[k];window.scrollTo(0,0);
+    if(k==="tut")window.dispatchEvent(new Event("tutshow"));else if(k==="tool"&&window.__ads)window.__ads();
+  }
+  window.addEventListener("hashchange",route);route();
 })();
 </script>
 </body>
