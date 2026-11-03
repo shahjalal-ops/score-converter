@@ -335,7 +335,7 @@ td select{width:100%}
       <p class="sub">পরীক্ষার নম্বর নতুন পূর্ণমানে রূপান্তর করুন এবং প্রতিটি শিক্ষার্থীর নতুন স্কোর ও গ্রেড দেখুন।</p>
       <div class="strip" aria-hidden="true"><i style="background:#e7fefa"></i><i style="background:#bbfcf1"></i><i style="background:#8ffae8"></i><i style="background:#63f8df"></i><i style="background:#27f5d3"></i><i style="background:#0bf4cd"></i><i style="background:#079c83"></i><i style="background:#05705e"></i><i style="background:#034439"></i><i style="background:#011814"></i></div>
       <a class="hero-link" href="#tutorial"><svg class="ic"><use href="#i-play"/></svg>কীভাবে কাজ করে? টিউটোরিয়াল দেখুন</a>
-      <a class="hero-link" href="#ielts" style="margin-left:8px;background:#e7fefa"><svg class="ic"><use href="#i-award"/></svg>ব্যান্ড স্কোর কনভার্টার</a>
+      <a class="hero-link" href="#ielts" style="margin-left:8px;background:#e7fefa"><svg class="ic"><use href="#i-award"/></svg>ব্যান্ড স্কোর ও CEFR</a>
     </div>
     <svg class="art" viewBox="0 0 170 120" aria-hidden="true">
       <line x1="8" y1="106" x2="162" y2="106" stroke="#8ffae8" stroke-width="2" stroke-linecap="round" opacity=".6"/>
@@ -458,15 +458,26 @@ td select{width:100%}
 
 <section id="viewIelts" hidden>
 <header class="hero"><div class="hero-in"><div>
-  <h1><span class="logo"><svg class="ic"><use href="#i-award"/></svg></span>ব্যান্ড স্কোর কনভার্টার</h1>
-  <p class="sub">Listening, Reading, Writing, Speaking, Grammar ইত্যাদি বিষয়ের স্কোর বসান বা ফাইল আপলোড করুন, Overall Band Score বের হয়ে আসবে।</p>
+  <h1><span class="logo"><svg class="ic"><use href="#i-award"/></svg></span>ব্যান্ড স্কোর ও CEFR কনভার্টার</h1>
+  <p class="sub">IELTS, KET, PET ও YLE (Starters, Movers, Flyers) এর বিষয়ভিত্তিক স্কোর বসান বা ফাইল আপলোড করুন, ব্যান্ড/স্কেল স্কোর ও CEFR লেভেল বের হয়ে আসবে।</p>
   <div class="strip" aria-hidden="true"><i style="background:#e7fefa"></i><i style="background:#bbfcf1"></i><i style="background:#8ffae8"></i><i style="background:#63f8df"></i><i style="background:#27f5d3"></i><i style="background:#0bf4cd"></i><i style="background:#079c83"></i><i style="background:#05705e"></i><i style="background:#034439"></i><i style="background:#011814"></i></div>
 </div></div><div class="ruler" aria-hidden="true"></div></header>
 <main class="wrap">
   <section class="step" id="ieInfo">
     <div class="rail"><div class="badge"><svg class="ic"><use href="#i-building"/></svg><em>১</em></div></div>
     <div class="card">
-      <h2>রিপোর্টের তথ্য<small>ঐচ্ছিক। প্রিন্টের উপরে বসবে</small></h2>
+      <h2>পরীক্ষার ধরন ও রিপোর্টের তথ্য<small>তথ্যগুলো ঐচ্ছিক, প্রিন্টের উপরে বসবে</small></h2>
+      <div class="grid" style="margin-bottom:16px"><div class="wide"><label for="ieExam">পরীক্ষার ধরন</label>
+        <select id="ieExam">
+          <option value="ielts">IELTS (ব্যান্ড ০–৯)</option>
+          <option value="ket">KET / A2 Key (স্কেল ১০০–১৫০)</option>
+          <option value="pet">PET / B1 Preliminary (স্কেল ১০০–১৭০)</option>
+          <option value="starters">YLE: Pre A1 Starters</option>
+          <option value="movers">YLE: A1 Movers</option>
+          <option value="flyers">YLE: A2 Flyers</option>
+        </select>
+        <div class="formula" style="margin-top:10px"><svg class="ic"><use href="#i-award"/></svg><span id="ieExamNote"></span></div>
+      </div></div>
       <div class="grid">
         <div class="wide"><label for="ieInst">প্রতিষ্ঠানের নাম</label><div class="inp"><svg class="ic"><use href="#i-building"/></svg><input id="ieInst" placeholder="যেমন: ABC Academy"></div></div>
         <div><label for="ieBatch">ব্যাচ / শ্রেণি</label><div class="inp"><svg class="ic"><use href="#i-users"/></svg><input id="ieBatch" placeholder="যেমন: Batch 12"></div></div>
@@ -484,10 +495,10 @@ td select{width:100%}
       <datalist id="ieNames"><option value="Listening"><option value="Reading"><option value="Writing"><option value="Speaking"><option value="Grammar"><option value="Vocabulary"><option value="Pronunciation"></datalist>
       <div class="row">
         <button class="primary" id="ieAddSub"><svg class="ic"><use href="#i-plus"/></svg>বিষয় যোগ</button>
-        <button id="ie4">৪ স্কিল</button>
-        <button id="ie5">৪ স্কিল + Grammar</button>
+        <button id="ie4">ডিফল্ট বিষয়</button>
+        <button id="ie5">ডিফল্ট + Grammar</button>
       </div>
-      <div class="hint">Listening ও Reading এর টেবিল ৪০ নম্বরের প্রচলিত আনুমানিক কনভার্সন, আসল পরীক্ষায় সামান্য ভিন্ন হতে পারে। পূর্ণমান ৪০ না হলে ৪০ এ স্কেল করে নেওয়া হয়। Writing ও Speaking এর ব্যান্ড (০–৯) সরাসরি বসান। Grammar-এর মতো অন্য বিষয়ে ‘সমানুপাতিক’ ব্যবহার হয়। সাধারণত শুধু ৪ স্কিল ধরা হয়, অন্য বিষয় বাদ দিতে ‘গণনায়’ এর টিক তুলুন।</div></div>
+      <div class="hint" id="ieHint"></div></div>
   </section>
   <section class="step" id="ieData">
     <div class="rail"><div class="badge"><svg class="ic"><use href="#i-upload"/></svg><em>৩</em></div></div>
@@ -954,41 +965,100 @@ td select{width:100%}
 (function(){
   var U=window.__u,$=function(i){return document.getElementById(i)},bn=U.toBn,num=U.num,esc=U.esc;
   function ic(n){return '<svg class="ic"><use href="#i-'+n+'"/></svg>'}
-  var M=[["L","Listening টেবিল (৪০)"],["R","Academic Reading (৪০)"],["G","General Reading (৪০)"],["P","সমানুপাতিক (০–৯)"],["B","সরাসরি ব্যান্ড (০–৯)"]];
   var TB={
     L:[[39,9],[37,8.5],[35,8],[32,7.5],[30,7],[26,6.5],[23,6],[18,5.5],[16,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5]],
     R:[[39,9],[37,8.5],[35,8],[33,7.5],[30,7],[27,6.5],[23,6],[19,5.5],[15,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5]],
     G:[[40,9],[39,8.5],[37,8],[36,7.5],[34,7],[32,6.5],[30,6],[27,5.5],[23,5],[19,4.5],[15,4],[12,3.5],[9,3],[6,2.5]]};
   var LV=["Did not attempt","Non user","Intermittent user","Extremely limited user","Limited user","Modest user","Competent user","Good user","Very good user","Expert user"];
-  var subs=[],stu=[],R=[];
-
+  var CAM4=["Reading","Writing","Listening","Speaking"];
+  var EX={
+    ielts:{n:"IELTS",k:"ielts",subs:["Listening","Reading","Writing","Speaking","Grammar"],head:"Overall Band",unit:"ব্যান্ড",
+      note:"ব্যান্ড ০–৯। CEFR (আনুমানিক): ৩.০–৩.৫ = A2, ৪.০–৫.০ = B1, ৫.৫–৬.৫ = B2, ৭.০–৮.০ = C1, ৮.৫–৯.০ = C2।",
+      conv:"Overall = গণনায় ধরা বিষয়গুলোর গড় ব্যান্ড, ০.৫ ধাপে রাউন্ড করা",
+      hint:"Listening ও Reading এর টেবিল ৪০ নম্বরের প্রচলিত আনুমানিক কনভার্সন, আসল পরীক্ষায় সামান্য ভিন্ন হতে পারে। পূর্ণমান ৪০ না হলে ৪০ এ স্কেল করে নেওয়া হয়। Writing ও Speaking এর ব্যান্ড (০–৯) সরাসরি বসান। Grammar-এর মতো অন্য বিষয়ে ‘সমানুপাতিক’ ব্যবহার হয়। সাধারণত শুধু ৪ স্কিল ধরা হয়, অন্য বিষয় বাদ দিতে ‘গণনায়’ এর টিক তুলুন।"},
+    ket:{n:"KET (A2 Key)",k:"cam",lo:100,hi:150,anch:[[0,100],[.2,105],[.4,120],[.7,140],[1,150]],subs:CAM4,head:"Overall Score",unit:"স্কেল",
+      note:"A2 Key: স্কেল ১০০–১৫০। Grade A ১৪০–১৫০ (B1 সার্টিফিকেট), Grade B ১৩৩–১৩৯ (A2), Grade C ১২০–১৩২ (A2), Level A1 ১০০–১১৯।",
+      conv:"Overall = দক্ষতাগুলোর স্কেল স্কোরের গড় (পূর্ণসংখ্যায়)"},
+    pet:{n:"PET (B1 Preliminary)",k:"cam",lo:100,hi:170,anch:[[0,100],[.2,105],[.4,120],[.67,140],[.85,160],[1,170]],subs:CAM4,head:"Overall Score",unit:"স্কেল",
+      note:"B1 Preliminary: স্কেল ১০০–১৭০। Grade A ১৬০–১৭০ (B2), Grade B ১৫৩–১৫৯ (B1), Grade C ১৪০–১৫২ (B1), Level A2 ১২০–১৩৯।",
+      conv:"Overall = দক্ষতাগুলোর স্কেল স্কোরের গড় (পূর্ণসংখ্যায়)"},
+    starters:{n:"Pre A1 Starters (YLE)",k:"yle",lvl:"Pre A1",subs:["Listening","Reading & Writing","Speaking"],head:"মোট Shields",unit:"shields",
+      note:"প্রতি দক্ষতায় ০–৫ shields (মোট ১৫), পাস/ফেল নেই। লক্ষ্য CEFR: Pre A1।",conv:"মোট shields = গণনায় ধরা দক্ষতাগুলোর shields-এর যোগফল"},
+    movers:{n:"A1 Movers (YLE)",k:"yle",lvl:"A1",subs:["Listening","Reading & Writing","Speaking"],head:"মোট Shields",unit:"shields",
+      note:"প্রতি দক্ষতায় ০–৫ shields (মোট ১৫), পাস/ফেল নেই। লক্ষ্য CEFR: Pre A1 ও A1, শক্তিশালী ফলে A1।",conv:"মোট shields = গণনায় ধরা দক্ষতাগুলোর shields-এর যোগফল"},
+    flyers:{n:"A2 Flyers (YLE)",k:"yle",lvl:"A2",subs:["Listening","Reading & Writing","Speaking"],head:"মোট Shields",unit:"shields",
+      note:"প্রতি দক্ষতায় ০–৫ shields (মোট ১৫), পাস/ফেল নেই। লক্ষ্য CEFR: A1 ও A2, শক্তিশালী ফলে A2।",conv:"মোট shields = গণনায় ধরা দক্ষতাগুলোর shields-এর যোগফল"}
+  };
+  EX.cam_h="প্রতিটি দক্ষতার নম্বর পূর্ণমানসহ বসান, ‘শতকরা → স্কেল স্কোর’ আনুমানিক রূপান্তর করে। আসল পরীক্ষায় প্রতি পেপারের আলাদা টেবিল থাকে, তাই গ্রেডের সীমার ±৩ পয়েন্টের মধ্যে হলে সতর্ক থাকুন। Cambridge-এর স্কেল স্কোর জানা থাকলে ‘সরাসরি স্কেল স্কোর’ বাছুন।";
+  EX.yle_h="Starters, Movers ও Flyers-এ পাস/ফেল নেই; প্রতি দক্ষতায় সর্বোচ্চ ৫ shields। shields জানা থাকলে ‘সরাসরি shields’ বাছুন, নম্বর থেকে করতে হলে ‘শতকরা → shields’ (আনুমানিক)। CEFR লেভেল শুধু ইঙ্গিত, আনুষ্ঠানিক ফল নয়।";
+  var ex="ielts",subs=[],stu=[],R=[];
+  function E(){return EX[ex]}
+  function K(){return E().k}
+  function methods(){
+    if(K()==="ielts")return [["L","Listening টেবিল (৪০)"],["R","Academic Reading (৪০)"],["G","General Reading (৪০)"],["P","সমানুপাতিক (০–৯)"],["B","সরাসরি ব্যান্ড (০–৯)"]];
+    if(K()==="cam")return [["P","শতকরা → স্কেল স্কোর (আনুমানিক)"],["S","সরাসরি স্কেল স্কোর"]];
+    return [["P","শতকরা → shields (আনুমানিক)"],["S","সরাসরি shields (০–৫)"]];
+  }
+  function direct(s){return s.m==="B"||s.m==="S"}
+  function dtot(s){return K()==="ielts"?9:K()==="cam"?E().hi:5}
+  function rng(){return K()==="ielts"?"০–৯":K()==="cam"?bn(E().lo)+"–"+bn(E().hi):"০–৫"}
   function guess(n){
-    if(/listen|লিসেন|শোনা/i.test(n))return{m:"L",tot:40};
-    if(/read|রিডিং|পড়া/i.test(n))return{m:"R",tot:40};
-    if(/writ|speak|রাইটিং|স্পিক|লেখা|বলা/i.test(n))return{m:"B",tot:9};
-    return{m:"P",tot:100};
+    if(K()==="ielts"){
+      if(/listen|লিসেন|শোনা/i.test(n))return{m:"L",tot:40};
+      if(/read|রিডিং|পড়া/i.test(n))return{m:"R",tot:40};
+      if(/writ|speak|রাইটিং|স্পিক|লেখা|বলা/i.test(n))return{m:"B",tot:9};
+      return{m:"P",tot:100};
+    }
+    return K()==="yle"?{m:"S",tot:5}:{m:"P",tot:100};
   }
   function mk(n,tot){var g=guess(n);return{n:n,m:g.m,tot:tot||g.tot,auto:true,inc:true}}
   function blank(){return{name:"",v:subs.map(function(){return null})}}
   function setSubs(list){subs=list;stu=stu.map(function(st){return{name:st.name,v:subs.map(function(){return null})}});if(!stu.length)stu=[blank()]}
+  function defaults(){return E().subs.map(function(n){return mk(n,n==="Grammar"?50:0)})}
   function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+  function interp(a,p){for(var i=1;i<a.length;i++)if(p<=a[i][0]){var x0=a[i-1],x1=a[i];return x0[1]+(x1[1]-x0[1])*(p-x0[0])/(x1[0]-x0[0])}return a[a.length-1][1]}
   function band(s,v){
     if(v==null)return null;
-    if(s.m==="B")return clamp(Math.round(v*2)/2,0,9);
-    if(s.m==="P")return clamp(Math.round(v/(s.tot||1)*18)/2,0,9);
-    var raw=Math.round(s.tot===40?v:v/(s.tot||40)*40),t=TB[s.m];
-    for(var i=0;i<t.length;i++)if(raw>=t[i][0])return t[i][1];
-    return raw>=2?2:raw>=1?1:0;
+    var k=K();
+    if(k==="ielts"){
+      if(s.m==="B")return clamp(Math.round(v*2)/2,0,9);
+      if(s.m==="P")return clamp(Math.round(v/(s.tot||1)*18)/2,0,9);
+      var raw=Math.round(s.tot===40?v:v/(s.tot||40)*40),t=TB[s.m];
+      for(var i=0;i<t.length;i++)if(raw>=t[i][0])return t[i][1];
+      return raw>=2?2:raw>=1?1:0;
+    }
+    if(k==="cam")return s.m==="S"?clamp(Math.round(v),0,E().hi):Math.round(interp(E().anch,clamp(v/(s.tot||1),0,1)));
+    if(s.m==="S")return clamp(Math.round(v),0,5);
+    var p=clamp(v/(s.tot||1),0,1);
+    return p>=.9?5:p>=.75?4:p>=.55?3:p>=.35?2:p>=.15?1:0;
   }
   function overall(bs){
     var a=[];subs.forEach(function(s,i){if(s.inc&&bs[i]!=null)a.push(bs[i])});
-    if(!a.length)return null;
-    var x=a.reduce(function(p,c){return p+c},0)/a.length,f=Math.floor(x+1e-9),r=x-f;
-    return r<.25-1e-9?f:r<.75-1e-9?f+.5:f+1;
+    if(!a.length)return{o:null,n:0};
+    var sum=a.reduce(function(p,c){return p+c},0),n=a.length,k=K();
+    if(k==="yle")return{o:sum,n:n};
+    var x=sum/n;
+    if(k==="cam")return{o:Math.round(x),n:n};
+    var f=Math.floor(x+1e-9),r=x-f;
+    return{o:r<.25-1e-9?f:r<.75-1e-9?f+.5:f+1,n:n};
   }
   function fb(b){return b==null?"—":bn(b.toFixed(1))}
+  function u(b){return b==null?"—":K()==="ielts"?fb(b):K()==="cam"?bn(b):bn(b)+"/৫"}
+  function fin(ov){
+    var o=ov.o,k=K();
+    if(o==null)return{t:"—",c:"—",g:"—"};
+    if(k==="ielts")return{t:fb(o),c:o>=8.5?"C2":o>=7?"C1":o>=5.5?"B2":o>=4?"B1":o>=3?"A2":"A1 বা নিচে",g:LV[Math.floor(o)]};
+    if(k==="cam"){
+      var g,c;
+      if(ex==="ket"){if(o>=140){g="Grade A";c="B1"}else if(o>=133){g="Grade B";c="A2"}else if(o>=120){g="Grade C";c="A2"}else if(o>=100){g="Level A1";c="A1"}else{g="গ্রেড নেই";c="—"}}
+      else{if(o>=160){g="Grade A";c="B2"}else if(o>=153){g="Grade B";c="B1"}else if(o>=140){g="Grade C";c="B1"}else if(o>=120){g="Level A2";c="A2"}else{g="গ্রেড নেই";c="—"}}
+      return{t:bn(o),c:c,g:g};
+    }
+    var mx=5*ov.n,strong=o>=Math.ceil(mx*.8),l=E().lvl,cc=l==="Pre A1"?"Pre A1":l==="A1"?(strong?"A1":"Pre A1"):(strong?"A2":"A1");
+    return{t:bn(o)+"/"+bn(mx),c:cc,g:bn(o)+" shields"};
+  }
 
-  /* info */
+  /* info + exam */
   var infoIds=["ieInst","ieBatch","ieDate"];
   try{var sv=JSON.parse(localStorage.getItem("ieInfo")||"{}");infoIds.forEach(function(k){if(sv[k])$(k).value=sv[k]})}catch(e){}
   infoIds.forEach(function(k){$(k).addEventListener("input",function(){
@@ -996,58 +1066,61 @@ td select{width:100%}
     rRes();
   })});
   function info(){return{inst:$("ieInst").value.trim(),batch:$("ieBatch").value.trim(),date:U.fmtDate($("ieDate").value)}}
+  function notes(){$("ieExamNote").textContent=E().note;$("ieHint").textContent=E().hint||(K()==="cam"?EX.cam_h:EX.yle_h)}
+  $("ieExam").addEventListener("change",function(e){ex=e.target.value;setSubs(defaults());notes();full()});
   function head(){
     var i=info(),h=i.inst?'<h3>'+esc(i.inst)+'</h3>':'<h3 class="ph">প্রতিষ্ঠানের নাম</h3>';
-    h+='<div class="t">ব্যান্ড স্কোর রিপোর্ট</div><div class="meta">';
+    h+='<div class="t">'+esc(E().n)+' — ব্যান্ড স্কোর রিপোর্ট</div><div class="meta">';
     if(i.batch)h+='<span>'+ic("users")+esc(i.batch)+'</span>';
     if(i.date)h+='<span>'+ic("cal")+esc(i.date)+'</span>';
-    return h+'</div><div class="conv">Overall = গণনায় ধরা বিষয়গুলোর গড় ব্যান্ড, ০.৫ ধাপে রাউন্ড করা</div>';
+    return h+'</div><div class="conv">'+E().conv+'</div>';
   }
 
-  /* subjects table */
+  /* subjects */
   function rSubs(){
     $("ieSubBody").innerHTML=subs.map(function(s,i){
       return '<tr><td><input list="ieNames" value="'+esc(s.n)+'" data-i="'+i+'" data-k="n" placeholder="বিষয়ের নাম"></td>'+
-        '<td><input type="number" min="1" step="any" value="'+(s.m==="B"?9:s.tot)+'" data-i="'+i+'" data-k="tot"'+(s.m==="B"?" disabled":"")+'></td>'+
-        '<td><select data-i="'+i+'" data-k="m">'+M.map(function(m){return '<option value="'+m[0]+'"'+(m[0]===s.m?" selected":"")+'>'+m[1]+'</option>'}).join("")+'</select></td>'+
+        '<td><input type="number" min="1" step="any" value="'+(direct(s)?dtot(s):s.tot)+'" data-i="'+i+'" data-k="tot"'+(direct(s)?" disabled":"")+'></td>'+
+        '<td><select data-i="'+i+'" data-k="m">'+methods().map(function(m){return '<option value="'+m[0]+'"'+(m[0]===s.m?" selected":"")+'>'+m[1]+'</option>'}).join("")+'</select></td>'+
         '<td style="text-align:center"><input type="checkbox" style="width:auto" data-i="'+i+'" data-k="inc"'+(s.inc?" checked":"")+'></td>'+
         '<td><button class="x" data-del="'+i+'" aria-label="মুছুন">'+ic("x")+'</button></td></tr>';
     }).join("");
+  }
+  function sync(row,s){
+    row.querySelector('[data-k="m"]').value=s.m;
+    var ti=row.querySelector('[data-k="tot"]');ti.value=direct(s)?dtot(s):s.tot;ti.disabled=direct(s);
   }
   $("ieSubBody").addEventListener("input",function(e){
     var t=e.target,i=t.dataset.i,k=t.dataset.k;if(i==null)return;
     var s=subs[i],row=t.closest("tr");
     if(k==="n"){
       s.n=t.value;
-      if(s.auto){var g=guess(t.value);if(g.m!==s.m){s.m=g.m;if(g.m!=="P")s.tot=g.tot;
-        row.querySelector('[data-k="m"]').value=s.m;
-        var ti=row.querySelector('[data-k="tot"]');ti.value=s.m==="B"?9:s.tot;ti.disabled=s.m==="B";rStu()}}
+      if(s.auto&&K()==="ielts"){var g=guess(t.value);if(g.m!==s.m){s.m=g.m;if(g.m!=="P")s.tot=g.tot;sync(row,s);rStu()}}
     } else if(k==="tot"){s.tot=num(t.value)||1;rStu()}
     else if(k==="m"){
       s.m=t.value;s.auto=false;
-      if(s.m==="L"||s.m==="R"||s.m==="G")s.tot=40;
-      var ti2=row.querySelector('[data-k="tot"]');ti2.value=s.m==="B"?9:s.tot;ti2.disabled=s.m==="B";rStu();
+      if(K()==="ielts"&&(s.m==="L"||s.m==="R"||s.m==="G"))s.tot=40;
+      sync(row,s);rStu();
     } else if(k==="inc"){s.inc=t.checked}
     rStuHead();rRes();
   });
   $("ieSubBody").addEventListener("click",function(e){
     var b=e.target.closest("button[data-del]");if(!b)return;
-    var i=+b.dataset.del;subs.splice(i,1);stu.forEach(function(st){st.v.splice(i,1)});
-    rSubs();rStuHead();rStu();rRes();
+    var i=+b.dataset.del;subs.splice(i,1);stu.forEach(function(st){st.v.splice(i,1)});full();
   });
-  $("ieAddSub").onclick=function(){subs.push(mk(""));stu.forEach(function(st){st.v.push(null)});rSubs();rStuHead();rStu();rRes()};
-  $("ie4").onclick=function(){setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking")]);full()};
-  $("ie5").onclick=function(){setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking"),mk("Grammar",50)]);full()};
+  $("ieAddSub").onclick=function(){subs.push(mk(""));stu.forEach(function(st){st.v.push(null)});full()};
+  $("ie4").onclick=function(){setSubs(E().subs.filter(function(n){return n!=="Grammar"}).map(function(n){return mk(n)}));full()};
+  $("ie5").onclick=function(){setSubs(E().subs.filter(function(n){return n!=="Grammar"}).map(function(n){return mk(n)}).concat([mk("Grammar",50)]));full()};
 
-  /* students table */
+  /* students */
   function rStuHead(){
     $("ieStuHead").innerHTML='<tr><th style="width:44px">ক্রম</th><th style="min-width:130px">নাম</th>'+
-      subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(s.m==="B"?" (০–৯)":" /"+bn(s.tot))+'</th>'}).join("")+'<th style="width:44px"></th></tr>';
+      subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(direct(s)?" ("+rng()+")":" /"+bn(s.tot))+'</th>'}).join("")+'<th style="width:44px"></th></tr>';
   }
   function rStu(){
     $("ieStuBody").innerHTML=stu.map(function(st,r){
       return '<tr><td>'+bn(r+1)+'</td><td><input value="'+esc(st.name)+'" data-r="'+r+'" data-k="name" placeholder="নাম"></td>'+
-        subs.map(function(s,i){return '<td><input type="number" min="0" max="'+(s.m==="B"?9:s.tot)+'" step="any" value="'+(st.v[i]==null?"":st.v[i])+'" data-r="'+r+'" data-c="'+i+'"></td>'}).join("")+
+        subs.map(function(s,i){return '<td><input type="number" min="0" max="'+(direct(s)?dtot(s):s.tot)+'" step="any" value="'+(st.v[i]==null?"":st.v[i])+'" data-r="'+r+'" data-c="'+i+'"></td>'}).join("")+
         '<td><button class="x" data-del="'+r+'" aria-label="মুছুন">'+ic("x")+'</button></td></tr>';
     }).join("");
   }
@@ -1070,40 +1143,42 @@ td select{width:100%}
     R=[];var over=false;
     stu.forEach(function(st){
       if(!st.v.some(function(x){return x!=null}))return;
-      st.v.forEach(function(x,i){if(x!=null&&(x>(subs[i].m==="B"?9:subs[i].tot)||x<0))over=true});
-      var bs=subs.map(function(s,i){return band(s,st.v[i])});
-      R.push({name:st.name||"—",raw:st.v,b:bs,o:overall(bs)});
+      st.v.forEach(function(x,i){if(x!=null&&(x>(direct(subs[i])?dtot(subs[i]):subs[i].tot)||x<0))over=true});
+      var bs=subs.map(function(s,i){return band(s,st.v[i])}),ov=overall(bs);
+      R.push({name:st.name||"—",raw:st.v,b:bs,o:ov.o,f:fin(ov)});
     });
-    if(!R.length){$("ieRes").innerHTML='<div class="empty">নম্বর যোগ করলে এখানে Overall Band Score দেখা যাবে।</div>';$("ieActions").style.display="none";return}
-    var os=R.map(function(r){return r.o}).filter(function(x){return x!=null});
-    var avg=os.length?os.reduce(function(a,b){return a+b},0)/os.length:null,best=os.length?Math.max.apply(null,os):null;
+    if(!R.length){$("ieRes").innerHTML='<div class="empty">নম্বর যোগ করলে এখানে ফলাফল ও CEFR লেভেল দেখা যাবে।</div>';$("ieActions").style.display="none";return}
+    var os=R.filter(function(r){return r.o!=null}),avg=null,best=null;
+    if(os.length){avg=os.reduce(function(a,r){return a+r.o},0)/os.length;best=os.reduce(function(a,r){return r.o>a.o?r:a})}
     var h=(over?'<p class="warn">কিছু নম্বর পূর্ণমানের চেয়ে বেশি বা ঋণাত্মক। ঘরগুলো আবার দেখুন।</p>':'')+
       '<div class="stats"><div class="stat">'+ic("users")+'<div><b>'+bn(R.length)+'</b><span>মোট প্রার্থী</span></div></div>'+
-      '<div class="stat">'+ic("avg")+'<div><b>'+(avg==null?"—":bn(avg.toFixed(2)))+'</b><span>গড় Overall Band</span></div></div>'+
-      '<div class="stat">'+ic("top")+'<div><b>'+fb(best)+'</b><span>সর্বোচ্চ Overall Band</span></div></div></div>'+
-      '<div class="scroll"><table><thead><tr><th>নাম</th>'+subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(s.inc?"":" *")+'</th>'}).join("")+'<th class="num">Overall</th><th>Level</th></tr></thead><tbody>';
+      '<div class="stat">'+ic("avg")+'<div><b>'+(avg==null?"—":bn(avg.toFixed(K()==="ielts"?2:1)))+'</b><span>গড় '+esc(E().head)+'</span></div></div>'+
+      '<div class="stat">'+ic("top")+'<div><b>'+(best?best.f.t:"—")+'</b><span>সর্বোচ্চ '+esc(E().head)+'</span></div></div></div>'+
+      '<div class="scroll"><table><thead><tr><th>নাম</th>'+subs.map(function(s){return '<th class="num">'+esc(s.n||"—")+(s.inc?"":" *")+'</th>'}).join("")+
+      '<th class="num">'+esc(E().head)+'</th><th class="num">CEFR</th><th>'+(K()==="ielts"?"Level":K()==="cam"?"Grade":"Shields")+'</th></tr></thead><tbody>';
     R.forEach(function(r){
       h+='<tr><td>'+esc(r.name)+'</td>'+subs.map(function(s,i){
-        return '<td class="num"'+(s.inc?"":' style="opacity:.55"')+'><b>'+fb(r.b[i])+'</b>'+(r.raw[i]!=null&&s.m!=="B"?'<small style="display:block;color:var(--mute);font-size:.75em">'+bn(r.raw[i])+'/'+bn(s.tot)+'</small>':"")+'</td>'}).join("")+
-        '<td class="num"><span class="g big">'+fb(r.o)+'</span></td><td>'+(r.o==null?"—":LV[Math.floor(r.o)])+'</td></tr>';
+        return '<td class="num"'+(s.inc?"":' style="opacity:.55"')+'><b>'+u(r.b[i])+'</b>'+(r.raw[i]!=null&&!direct(s)?'<small style="display:block;color:var(--mute);font-size:.75em">'+bn(r.raw[i])+'/'+bn(s.tot)+'</small>':"")+'</td>'}).join("")+
+        '<td class="num"><span class="g big">'+r.f.t+'</span></td><td class="num"><span class="g">'+esc(r.f.c)+'</span></td><td>'+esc(r.f.g)+'</td></tr>';
     });
     h+='</tbody></table></div>';
-    if(subs.some(function(s){return !s.inc}))h+='<div class="hint">* চিহ্নিত বিষয় Overall গণনায় ধরা হয়নি।</div>';
+    if(subs.some(function(s){return !s.inc}))h+='<div class="hint">* চিহ্নিত বিষয় মোট স্কোর গণনায় ধরা হয়নি।</div>';
+    if(K()==="yle")h+='<div class="hint">YLE-তে পাস/ফেল নেই। CEFR লেভেল ইঙ্গিত মাত্র: মোট shields ৮০% বা তার বেশি হলে শক্তিশালী ফল ধরা হয়েছে।</div>';
     $("ieRes").innerHTML=h;$("ieActions").style.display="flex";
   }
 
   /* export */
   function tdata(){
-    var h=["নাম"];subs.forEach(function(s){h.push(s.n+" (নম্বর)");h.push(s.n+" (ব্যান্ড)")});h.push("Overall Band","Level");
+    var h=["নাম"];subs.forEach(function(s){h.push(s.n+" (নম্বর)");h.push(s.n+" ("+E().unit+")")});h.push(E().head,"CEFR","Grade/Level");
     return [h].concat(R.map(function(r){
       var a=[r.name];subs.forEach(function(s,i){a.push(r.raw[i]==null?"":r.raw[i]);a.push(r.b[i]==null?"":r.b[i])});
-      a.push(r.o==null?"":r.o,r.o==null?"":LV[Math.floor(r.o)]);return a}));
+      a.push(r.f.t.replace(/[০-৯]/g,function(d){return "০১২৩৪৫৬৭৮৯".indexOf(d)}),r.f.c,r.f.g);return a}));
   }
   function q(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
   $("ieCsv").onclick=function(){U.save(new Blob(["\ufeff"+tdata().map(function(r){return r.map(q).join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"band-scores.csv")};
   $("ieXlsx").onclick=function(){
     if(typeof XLSX==="undefined"){alert("Excel লাইব্রেরি লোড হয়নি। CSV ব্যবহার করুন।");return}
-    var i=info(),aoa=[[i.inst||""],["শ্রেণি/ব্যাচ: "+i.batch,"তারিখ: "+i.date],[]].concat(tdata());
+    var i=info(),aoa=[[i.inst||""],[E().n,"শ্রেণি/ব্যাচ: "+i.batch,"তারিখ: "+i.date],[]].concat(tdata());
     var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(aoa),"Band Scores");XLSX.writeFile(wb,"band-scores.xlsx");
   };
   $("iePrint").onclick=function(){window.print()};
@@ -1111,7 +1186,11 @@ td select{width:100%}
   /* import */
   function msg(t,err){var m=$("ieMsg");m.textContent=t;m.className="msg"+(err?" err":"")}
   function ph(h){var m=/^(.*?)\s*(?:\/|\()\s*(\d+(?:\.\d+)?)\s*\)?\s*$/.exec(h);return m&&m[1]?{n:m[1].trim(),tot:+m[2]}:{n:h}}
-  function mkh(p){var s=mk(p.n);if(p.tot&&s.m!=="B")s.tot=p.tot;return s}
+  function mkh(p){
+    var s=mk(p.n);
+    if(p.tot){if(K()==="yle"&&s.m==="S"){s.m="P";s.tot=p.tot}else if(!direct(s))s.tot=p.tot}
+    return s;
+  }
   function cell(r,i){return r[i]==null?"":r[i]}
   function imp(rows){
     rows=rows.filter(function(r){return r&&r.some(function(c){return String(c==null?"":c).trim()!==""})});
@@ -1154,23 +1233,27 @@ td select{width:100%}
   ["dragenter","dragover"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.add("over")})});
   ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("over")})});
   dz.addEventListener("drop",function(e){handle(e.dataTransfer.files[0])});
-  var DEMO=[["নাম","Listening/40","Reading/40","Writing","Speaking","Grammar/50"],["রহিম",32,30,6.5,7,42],["করিম",26,24,6,6,35],["সুমি",36,35,7.5,8,46],["নাসরিন",20,18,5.5,5.5,30]];
-  $("ieDemoCsv").onclick=function(){U.save(new Blob(["\ufeff"+DEMO.map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-band.csv")};
+  function demo(){
+    var k=K();
+    if(k==="ielts")return [["নাম","Listening/40","Reading/40","Writing","Speaking","Grammar/50"],["রহিম",32,30,6.5,7,42],["করিম",26,24,6,6,35],["সুমি",36,35,7.5,8,46],["নাসরিন",20,18,5.5,5.5,30]];
+    if(k==="cam")return [["নাম","Reading/100","Writing/100","Listening/100","Speaking/100"],["রহিম",72,65,70,68],["করিম",55,48,60,52],["সুমি",88,82,90,85],["নাসরিন",40,35,45,42]];
+    return [["নাম","Listening","Reading & Writing","Speaking"],["রহিম",4,5,4],["করিম",3,3,4],["সুমি",5,5,5],["নাসরিন",2,3,3]];
+  }
+  $("ieDemoCsv").onclick=function(){U.save(new Blob(["\ufeff"+demo().map(function(r){return r.join(",")}).join("\n")],{type:"text/csv;charset=utf-8"}),"demo-band.csv")};
   $("ieDemoXlsx").onclick=function(){
     if(typeof XLSX==="undefined"){msg("Excel লাইব্রেরি লোড হয়নি। ডেমো CSV নিন।",true);return}
-    var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(DEMO),"Candidates");XLSX.writeFile(wb,"demo-band.xlsx");
+    var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(demo()),"Candidates");XLSX.writeFile(wb,"demo-band.xlsx");
   };
-  $("ieSample").onclick=function(){imp(DEMO)};
+  $("ieSample").onclick=function(){imp(demo())};
 
-  setSubs([mk("Listening"),mk("Reading"),mk("Writing"),mk("Speaking"),mk("Grammar",50)]);
-  full();
+  setSubs(defaults());notes();full();
 })();
 
 </script>
 <script>
 (function(){
   var V={tool:document.getElementById("viewTool"),ielts:document.getElementById("viewIelts"),tut:document.getElementById("tut")},tabs=document.querySelectorAll(".tab");
-  var T={tool:"স্কোর কনভার্টার",ielts:"ব্যান্ড স্কোর কনভার্টার",tut:"টিউটোরিয়াল — স্কোর কনভার্টার"};
+  var T={tool:"স্কোর কনভার্টার",ielts:"ব্যান্ড স্কোর ও CEFR কনভার্টার",tut:"টিউটোরিয়াল — স্কোর কনভার্টার"};
   function route(){
     var k=location.hash==="#tutorial"?"tut":location.hash==="#ielts"?"ielts":"tool";
     for(var n in V)V[n].hidden=(n!==k);
